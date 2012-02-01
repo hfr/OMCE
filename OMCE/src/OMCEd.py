@@ -30,11 +30,13 @@ AUTHOR="Author: Ruediger Kessel (ruediger.kessel@nist.gov)"
 OMCED_PID_FILE = 'omced.pid'
 OMCED_CONFIG_FILE = 'OMCEd_config'
 
+import warnings
+warnings.simplefilter("ignore",DeprecationWarning)
 import sys
 import os
 from OMCEserver import ServerMain
 from OMCEbase import UnQuote, get_main_dir, run_main
-    
+
 def ReadOptionFile(fn,warn=True):
     '''
     Reads a list of options from a text file
@@ -59,7 +61,7 @@ def ReadOptionFile(fn,warn=True):
         f.close()
     else:
         if warn and (fn!=''):
-            print 'Warning: config file "%s" cannot be found!' % fn 
+            print 'Warning: config file "%s" cannot be found!' % fn
     return L
 
 def main():

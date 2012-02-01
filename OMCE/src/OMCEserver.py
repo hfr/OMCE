@@ -29,6 +29,8 @@ __MODIDstr__="OMCE Server (OMCE V:%s)"
 __MODID__=__MODIDstr__ % __version__
 __AUTHOR__="Author: Ruediger Kessel (ruediger.kessel@nist.gov)"
 #-----------------------------------------------------
+import warnings
+warnings.simplefilter("ignore",DeprecationWarning)
 import sys
 import os
 from OMCEbase import UnQuote, get_main_dir, SERVICE_VERSION, ConText, DefConText
@@ -73,10 +75,10 @@ class OMCEService(rpyc.Service):
         self.IncClientID()
         self.exposed_namespace = {}
         return
- 
+
     def on_disconnect(self):
         pass
- 
+
     def exposed_OMCE(self,argv,path,modname,functab):
         OMCEService.LOCK.acquire()
         OMCEService.RunningSimulations+=1
@@ -95,28 +97,28 @@ class OMCEService(rpyc.Service):
                     Simulator(argv,context,path,modname,True)
                 except Error,er:
                     errmsg=DefConText.ERRORMSG(er.number,*er.params)
-                    self.Server.logger.info("simulation %sterminated with Error %s", self.SimIDStr,errmsg) 
+                    self.Server.logger.info("simulation %sterminated with Error %s", self.SimIDStr,errmsg)
                     context.ERROR(er.number,*er.params)
             except Terminate,te:
                 ExitCode = te.code
         except Exception,e:
             context.PRINT(context.ERRORMSG(255,'\nFatal Error: '+context.STR(e)+"!"),VL_Error)
             context.PRINT(context.MSG(1,'Service'),VL_Error)
-            self.Server.logger.info("simulation %sterminated with exception %s", self.SimIDStr,str(e)) 
+            self.Server.logger.info("simulation %sterminated with exception %s", self.SimIDStr,str(e))
             ExitCode=255
         context.EmptyQueue()
         OMCEService.LOCK.acquire()
         OMCEService.RunningSimulations-=1
         OMCEService.LOCK.release()
         self.Server.logger.info("completing simulation %s(exit code: %s)", self.SimIDStr,ExitCode)
-        return ExitCode 
+        return ExitCode
 
     def exposed_RunningSimulations(self):
         OMCEService.LOCK.acquire()
         rs=OMCEService.RunningSimulations
         OMCEService.LOCK.release()
         return rs
- 
+
     def exposed_TotalSimulations(self):
         OMCEService.LOCK.acquire()
         ts=OMCEService.SimulationID
@@ -155,7 +157,7 @@ def StartServer(port, ar=False, host='0.0.0.0', fork=False, quiet=False, vdbn=''
     DefConText.NOISE(DefConText.MSG(104))
     logger=OMCElogger(OMCEService.ALIASES[0],show_tid = True,console = console,file=DefConText.logfile)
     DefConText.logfile=None
-    if fork:    
+    if fork:
         OMCEService.Server = OMCEForkingServer(OMCEService, port = port, auto_register = ar, hostname=host, logger = logger, authenticator = at)
     else:
         OMCEService.Server = OMCEThreadedServer(OMCEService, port = port, auto_register = ar, hostname=host, logger = logger, authenticator = at)

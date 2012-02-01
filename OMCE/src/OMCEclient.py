@@ -27,6 +27,8 @@ __version__="1.0.0"
 __MODID__="OMCE Client (OMCEclient V:"+__version__+")"
 __AUTHOR__="Author: Rüdiger Kessel (ruediger.kessel@nist.gov)"
 #-----------------------------------------------------
+import warnings
+warnings.simplefilter("ignore",DeprecationWarning)
 from OMCEbase import *
 import rpyc
 import os
@@ -80,7 +82,7 @@ def Client(argv):
                 if len(o)==2:
                     DefConText.VerboseLevel=int(o[1])
     if (user!='') or (passw!=''):
-        tls=True 
+        tls=True
     DefConText.NOISE('Server-Argv: '+DefConText.STR(argv))
     if not tls:
         DefConText.PRINT('Connecting OMCE-Server on %s port %s...' % (server,str(port)),VL_Info)

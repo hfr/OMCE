@@ -31,6 +31,8 @@ __version__="1.1.3"
 __MODID__="OMCE Histogram Viewer (Viewer V:"+__version__+")"
 __AUTHOR__="Author: Ruediger Kessel (ruediger.kessel@gmail.com)"
 #-----------------------------------------------------
+import warnings
+warnings.simplefilter("ignore",DeprecationWarning)
 import numpy as np
 import matplotlib
 #matplotlib.rc('text', usetex = True)
