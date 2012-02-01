@@ -89,8 +89,9 @@
 # 1.2.14.2 2012-01-23 Rüdiger Kessel: added median()
 # 1.2.14.3 2012-01-24 Rüdiger Kessel: added Python coding for user defined functions
 # 1.2.14.4 2012-01-30 Rüdiger Kessel: added Proc element
+# 1.2.14.5 2012-02-01 Rüdiger Kessel: minor bugfix
 #-----------------------------------------------------
-__version__="1.2.14.4"
+__version__="1.2.14.5"
 __MODID__="Open Monte Carlo Engine (OMCE V:"+__version__+")"
 __AUTHOR__="Author: Ruediger Kessel (ruediger.kessel@gmail.com)"
 #-----------------------------------------------------

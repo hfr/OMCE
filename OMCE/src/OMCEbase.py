@@ -20,7 +20,7 @@
 # characteristic. We would appreciate acknowledgement if the
 # software is used.
 #-----------------------------------------------------
-__version__="1.0.4"
+__version__="1.0.5"
 __MODID__="OMCE Base (V:"+__version__+")"
 __AUTHOR__="Author: Rüdiger Kessel (ruediger.kessel@gmail.com)"
 SERVICEVERSION="1.0.0"
@@ -31,6 +31,7 @@ SERVICE_VERSION="1.0.0"
 # 1.0.2 2011-02-11 Rüdiger Kessel: ConText support
 # 1.0.3 2011-02-11 Rüdiger Kessel: security layer support
 # 1.0.4 2011-02-11 Rüdiger Kessel: encode bugfix for Python 2.5
+# 1.0.5 2011-02-11 Rüdiger Kessel: encode bugfix for missing VdbAuthenticator
 #-----------------------------------------------------
 from OMCEerrors import error
 from OMCEmsgs import msg
@@ -1344,7 +1345,11 @@ class Str2ParamList(object):
         else:
             return self.lp[i]
 
-from rpyc.utils.authenticators import VdbAuthenticator, tlsapi, AuthenticationError
+try:
+	from rpyc.utils.authenticators import VdbAuthenticator as VdbAuthenticator
+except:
+	from rpyc.utils.authenticators import TlsliteVdbAuthenticator as VdbAuthenticator
+from rpyc.utils.authenticators import tlsapi, AuthenticationError
 
 class OMCEAuthenticator(VdbAuthenticator):
     wait_time=60.0 # 1 min * number of non successful tries
