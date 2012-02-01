@@ -22,7 +22,7 @@
 #-----------------------------------------------------
 __version__="1.0.4"
 __MODID__="OMCE Base (V:"+__version__+")"
-__AUTHOR__="Author: Rüdiger Kessel (ruediger.kessel@nist.gov)"
+__AUTHOR__="Author: Rüdiger Kessel (ruediger.kessel@gmail.com)"
 SERVICEVERSION="1.0.0"
 SERVICE_VERSION="1.0.0"
 #-----------------------------------------------------
@@ -323,8 +323,7 @@ class ConText:
         return
 
     def ERROR(self,num,*args):
-        self.FATALERROR(num,self.ERRORMSG(num,*args))
-        return
+        raise Error(num,*args)
 
     def FormatError(self,f):
         self.ERROR(4,f)
@@ -351,13 +350,16 @@ class ConText:
     def MSG(self,num,*args):
         if num in msg.keys():
             E=msg[num]
-            al=[]
-            for i in range(len(E[1])):
-                if i<len(args):
-                    al.append(self.STR(args[i]))
-                else:
-                    al.append('')
-            M=E[0] % tuple(al)
+            if E[0]:
+                al=[]
+                for i in range(len(E[1])):
+                    if i<len(args):
+                        al.append(self.STR(args[i]))
+                    else:
+                        al.append('')
+                M=E[0] % tuple(al)
+            else:
+                M=''
         else:
             al=[]
             for a in args:
@@ -1531,7 +1533,7 @@ def run_main(MAIN,argv,*args):
             ExitCode = te.code
         except Exception,e:
             DefConText.PRINT(TRACEINFO(),VL_Details)
-            DefConText.PRINT(DefConText.ERRORMSG(255,'\nFatal Error: '+DefConText.STR(e)+"!"),VL_Error)
+            DefConText.PRINT(DefConText.ERRORMSG(255,'Fatal Error: '+DefConText.STR(e)+"!"),VL_Error)
             ExitCode=255
         except SystemExit:
             DefConText.PRINT('System exit')
@@ -1587,7 +1589,8 @@ def GetReservedWords(opts):
         "break","except","import","print",
         "class","exec","in","raise",
         "continue","finally","is","return",
-        "def","for","lambda","try","__builtins__"]
+        "def","for","lambda","try",
+        "__builtins__","__block_size__","__print_error__"]
     return wl
 
 from pyparsing import OneOrMore,Literal,Optional,ZeroOrMore,Forward,Or,alphas,nums,Word,CaselessLiteral,Combine,NoMatch,ParseException

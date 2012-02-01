@@ -25,10 +25,11 @@
 # 1.1.0 2011-01-14 Rüdiger Kessel: Integration with OMCEbase
 # 1.1.1 2011-01-21 Rüdiger Kessel: font size support
 # 1.1.2 2011-01-23 Rüdiger Kessel: use run_main()
+# 1.1.3 2011-01-23 Rüdiger Kessel: added option -its
 #-----------------------------------------------------
-__version__="1.1.2"
+__version__="1.1.3"
 __MODID__="OMCE Histogram Viewer (Viewer V:"+__version__+")"
-__AUTHOR__="Author: Ruediger Kessel (ruediger.kessel@nist.gov)"
+__AUTHOR__="Author: Ruediger Kessel (ruediger.kessel@gmail.com)"
 #-----------------------------------------------------
 import numpy as np
 import matplotlib
@@ -115,6 +116,7 @@ def InitOptions():
     specs['-pdf']=['i',0,1,0,      'save plots as pdf, if set']
     specs['-mm']=['i',0,1,1,       'use fancy symbols']
     specs['-it']=['i',0,1,1,       'use italic for symbols']
+    specs['-its']=['i',0,1,1,      'use italic for subscripts in symbols']
     specs['-rm']=['i',0,1,1,       'use serif font']
     specs['-sht']=['i',0,1,1,      'show x-label']
     specs['-shx']=['i',0,1,1,      'show y-label']
@@ -134,7 +136,7 @@ def InitOptions():
         opts[skey]=specs[skey][3]
     return opts,specs
 
-def TexSymbol(opts,s):
+def TexSymbol(opts,s,its=True):
     if opts['-mm']!=0:
         ss=s.replace('^','_')
         T=ss.split('_')
@@ -162,10 +164,13 @@ def TexSymbol(opts,s):
             if len(t)>0:
                 if K[i]==0:
                     s+=t
-                elif K[i]>0:
-                    s+=r'^{'+t+r'}'
                 else:
-                    s+=r'_{'+t+r'}'
+                    if not its:
+                        t=r'\mathregular{'+t+r'}'
+                    if K[i]>0:
+                        s+=r'^{'+t+r'}'
+                    else:
+                        s+=r'_{'+t+r'}'
     return s
 
 def MakeTeXSym(opts,ttl):
@@ -206,7 +211,7 @@ def VarConv(opts,D,ttl):
     if ttl.find('%fn%')>=0:
         ttl=ttl.replace(r'%fn%',os.path.splitext(os.path.basename(opts['FILENAME']))[0])
     if ttl.find('%sym%')>=0:
-        ttl=ttl.replace(r'%sym%',MakeTeXSym(opts,TexSymbol(opts,D['sym'])))
+        ttl=ttl.replace(r'%sym%',MakeTeXSym(opts,TexSymbol(opts,D['sym'],opts['-its'])))
     if ttl.find('%unit%')>=0:
         ttl=ttl.replace(r'%unit%',MakeTeX(opts,TexSymbol(opts,D['unit'])))
     if ttl.find('%unit-1%')>=0:
@@ -215,7 +220,7 @@ def VarConv(opts,D,ttl):
         else:
             ttl=ttl.replace(r'%unit-1%','')
     if ttl.find('%phi%')>=0:
-        ttl=ttl.replace(r'%phi%',MakeTeXSym(opts,r'\phi('+TexSymbol(opts,D['sym'])+r')'))
+        ttl=ttl.replace(r'%phi%',MakeTeXSym(opts,r'\phi('+TexSymbol(opts,D['sym'],opts['-its'])+r')'))
     return ttl
 
 def Viewer(filename,options):

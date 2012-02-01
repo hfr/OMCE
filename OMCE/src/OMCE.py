@@ -87,11 +87,12 @@
 # 1.2.14 2011-05-02 Rüdiger Kessel: added Cauchy() and Lognormal()
 # 1.2.14.1 2011-10-15 Rüdiger Kessel: added sgn() and atan2()
 # 1.2.14.2 2012-01-23 Rüdiger Kessel: added median()
-# 1.2.14.3 2011-01-24 Rüdiger Kessel: added Python coding for user defined functions
+# 1.2.14.3 2012-01-24 Rüdiger Kessel: added Python coding for user defined functions
+# 1.2.14.4 2012-01-30 Rüdiger Kessel: added Proc element
 #-----------------------------------------------------
-__version__="1.2.14.3"
+__version__="1.2.14.4"
 __MODID__="Open Monte Carlo Engine (OMCE V:"+__version__+")"
-__AUTHOR__="Author: Ruediger Kessel (ruediger.kessel@nist.gov)"
+__AUTHOR__="Author: Ruediger Kessel (ruediger.kessel@gmail.com)"
 #-----------------------------------------------------
 import warnings
 warnings.simplefilter("ignore",DeprecationWarning)
@@ -115,6 +116,7 @@ import scipy.stats as stats
 import StringIO
 import string
 import numpy as Numpy
+import copy
 
 def BeginInfo(context,Name=None):
     if context.VerboseLevel==0:
@@ -398,11 +400,11 @@ def CreateConGrammar(data):
     data['congrammar']=Grammar(data['context'],data['predefsymbols'].keys(),data['predeffunc'].keys(),[],2)
     return
 
-def COMPILE(s):
+def COMPILE(s,mode='eval'):
     '''
     compile command used to compile expression <s>
     '''
-    return code.compile_command(s,'<input>','eval')
+    return code.compile_command(s,'<input>',mode)
 
 def GetContF(fdefs,f):
     f['usedf']=True
@@ -424,23 +426,45 @@ def ResetUsedF(fdefs):
         f['usedf']=False
     return
 
+def SetEnvironment(opts,env):
+    def __print_error__(msg):
+        raise Error(250,msg)
+    def __print_warning__(msg):
+        opts['CONTEXT'].PRINT(msg,VL_Warn)
+    def __block_size__():
+        return opts['-bs']
+    env['Numpy']=Numpy
+    env['BlockSize']=__block_size__
+    env['Error']=__print_error__
+    env['Warning']=__print_warning__
+    return
+
 def CompileFuncs(opts,data):
     '''
     compile usr defined functions given in data['funcdefs']'
     '''
-    def FuncHeader(F):
-        FT='def '+F['sym']+'('+','.join(F['param'])+'):\n'
-        if (len(F['global'])>0):
-            FT+=I+'global '+','.join(F['global'])+'\n'
+    def FuncHeader(F,addself=False,addgbl=True):
+        param=F['param']
+        sym=F['sym']
+        if addself:
+            param=['self']+param
+            sym='_uf_'+sym
+        FT='def '+sym+'('+','.join(param)+'):\n'
+        if addgbl:
+            if (len(F['global'])>0):
+                for gbl in F['global']:
+                    FT+='    '+gbl+'=self.__get_global__("'+gbl+'")\n'
         return FT
-    def __print_error__(msg):
+    def __print_error__(_self,msg):
         raise Error(250,msg)
-    def __block_size__():
+    def __print_warning__(_self,msg):
+        opts['CONTEXT'].PRINT(msg,VL_Warn)
+    def __block_size__(_self):
         return opts['-bs']
     context=opts['CONTEXT']
-    FT=''
-    PFT=''
     I='    '
+    FT=''
+    gbls=[]
     for F in data['funcdefs']:
         if F['coding']=='OMCE':
             GR=CheckGrammar(data['grammar'],F['equ'],"Function",F['name'])
@@ -458,17 +482,20 @@ def CompileFuncs(opts,data):
                             found=True
                             break
                     for E in data['equs']:
-                        if E['sym']==S:
-                            found=True
-                            break
+                        for sym in E['syms']:
+                            if sym==S:
+                                found=True
+                                break
                     if found:
                         F['uglobal'].append(S)
                         continue
                     else:
                         context.ERROR(32,S,F['name'])
                 context.ERROR(33,S,F['name'])
-            FT+=FuncHeader(F)
-            FT+=I+'return '+''.join(GR[0])+'\n'
+            gbls=gbls+F['global']
+            for line in FuncHeader(F,True,True).strip('\n').split('\n'):
+                FT+=I+line+'\n'
+            FT+=2*I+'return '+''.join(GR[0])+'\n'
             FT+='\n'
         elif F['coding']=='PYTHON':
             F['contf']=[]
@@ -483,47 +510,64 @@ def CompileFuncs(opts,data):
                         found=True
                         break
                 for E in data['equs']:
-                    if E['sym']==S:
-                        found=True
-                        break
+                    for sym in E['syms']:
+                        if sym==S:
+                            found=True
+                            break
                 if found:
                     F['uglobal'].append(S)
                     continue
                 else:
                     context.ERROR(32,S,F['name'])
-            PFT+=FuncHeader(F)
-            PFT+=I+'import numpy as Numpy\n'
-            PFT+=I+'BlockSize=__block_size__\n' #+context.STR(opts['-bs'])+'\n'
-            PFT+=I+'Error=__print_error__'+'\n'
+            gbls=gbls+F['global']
+            for line in FuncHeader(F,True,True).strip('\n').split('\n'):
+                FT+=I+line+'\n'
+            FT+=2*I+'Numpy=self.__numpy__\n'
+            FT+=2*I+'BlockSize=self.__block_size__\n'
+            FT+=2*I+'Error=self.__print_error__'+'\n'
+            FT+=2*I+'Warning=self.__print_warning__'+'\n'
+            FT+=2*I+'if True:'+'\n'
             for l in F['equ'].split('\n'):
-                PFT+=I+l+'\n'
-            PFT+='\n'
+                FT+=3*I+l+'\n'
+            FT+='\n'
         else:
             context.ERROR(94,F['coding'],F['name'])
+    gbls=list(set(gbls))
+    data['usr_gbls']=gbls
+    FTH= 'class __User_Functions__:\n'
+    FTH+='    pass\n'
+    FTH+='    __globals__={}\n'
+    FTH+='    def __get_global__(self,Name):\n'
+    FTH+='        return self.__globals__[Name]\n\n'
     for F in data['funcdefs']:
         ResetUsedF(data['funcdefs'])
         F['ccontf']=GetContF(data['funcdefs'],F)
-    data['funcdeftext']=FT
-    data['pfuncdeftext']=PFT
+    data['funcdeftext']=FTH+FT
+    data['usr_func_class']=None
+    data['usr_func_obj']=None
     SYMS={}
     for v in data['vars']:
         SYMS[v['sym']]=None
     for v in data['equs']:
-        SYMS[v['sym']]=None
+        for sym in v['syms']:
+            SYMS[sym]=None
     CONTEXT=DictMerge(data['predefequs'],SYMS)
-    if data['funcdeftext']:
-        exec data['funcdeftext'] in CONTEXT
-    if data['pfuncdeftext']:
-        E={}
-        exec '' in E
-        CONTEXT['__builtins__']=E['__builtins__']
-        CONTEXT['__print_error__']=__print_error__
-        CONTEXT['__block_size__']=__block_size__
-        exec data['pfuncdeftext'] in CONTEXT
     data['predefequs']=CONTEXT
+    CONTEXT=copy.copy(CONTEXT)
+    E={}
+    exec '' in E
+    CONTEXT['__builtins__']=E['__builtins__']
+    exec data['funcdeftext'] in CONTEXT
+    data['usr_func_class']=CONTEXT['__User_Functions__']
+    CONTEXT['__User_Functions__'].__numpy__=Numpy
+    CONTEXT['__User_Functions__'].__print_error__=__print_error__
+    CONTEXT['__User_Functions__'].__print_warning__=__print_warning__
+    CONTEXT['__User_Functions__'].__block_size__=__block_size__
+    data['usr_func_obj']=CONTEXT['__User_Functions__']()
     for F in data['funcdefs']:
-        F['code']=CONTEXT[F['sym']]
+        F['code']=getattr(data['usr_func_obj'],'_uf_'+F['sym'])
         data['predefequs'][F['sym']]=F['code']
+    data['usr_context']=CONTEXT
     return
 
 class XmlReaderBase:
@@ -991,14 +1035,19 @@ class OMCReader(XmlReaderBase):
     def GetEquList(self,opts,data):
         MemName=BeginInfo(self.context,'OMCReader.GetEquList')
         EL=[]
+        ESL=[]
         if hasattr(data['doc'].Model,'Equations'):
             if hasattr(data['doc'].Model.Equations,'Equ'):
                 for equ in data['doc'].Model.Equations.Equ:
                     E={}
+                    E['type']='equ'
                     E['id']=len(EL)
                     E['name']=self.STRIPED(equ.Symbol)
-                    E['sym']=self.ValidateName(self.ConvSymName(E['name']),'equation')
-                    self.CheckSymbol(data,E['sym'])
+                    E['names']=[E['name']]
+                    sym=self.ValidateName(self.ConvSymName(E['name']),'equation')
+                    ESL.append(sym)
+                    E['syms']=[sym]
+                    self.CheckSymbol(data,sym)
                     E['src']=self.GetEqu(opts,data,equ,E['name'])
                     E['equ']=self.ConvEqu(E['src'])
                     GR=CheckGrammar(data['grammar'],E['equ'],"Equation",E['name'])
@@ -1010,7 +1059,60 @@ class OMCReader(XmlReaderBase):
                     else:
                         E['unit']=''
                     EL.append(E)
+            if hasattr(data['doc'].Model.Equations,'Proc'):
+                for proc in data['doc'].Model.Equations.Proc:
+                    E={}
+                    E['type']='proc'
+                    E['id']=len(EL)
+                    ns=self.STRIPED(proc.Symbols).replace(' ','')
+                    E['name']=ns
+                    E['names']=ns.split(',')
+                    NS=ns.split(',')
+                    syms=[]
+                    for n in NS:
+                        sym=self.ValidateName(self.ConvSymName(n),'procedure')
+                        syms.append(sym)
+                        ESL.append(sym)
+                        self.CheckSymbol(data,sym)
+                    E['syms']=syms
+                    E['src']=self.STR(self.UNICODE(proc)).strip('\n')
+                    E['equ']=self.ConvEqu(E['src'])
+                    if hasattr(proc,'Param'):
+                        P=self.STRIPED(proc.Param)
+                        E['cont']=self.GetContr(self.ConvSymNames(P.replace(' ','').split(',')))
+                        for P in E['cont']:
+                            self.CheckSymbol(data,P)
+                    else:
+                        E['cont']=[]
+                    if hasattr(proc,'Using'):
+                        P=self.STRIPED(proc.Using)
+                        E['contf']=self.GetContr(self.ConvSymNames(P.replace(' ','').split(',')))
+                    else:
+                        E['contf']=[]
+                    ls=E['equ'].split('\n')
+                    es='if True:\n'
+                    I='    '
+                    for line in ls:
+                        es+=I+line+'\n'
+                    E['code']=COMPILE(es,'exec')
+                    if hasattr(proc,'Units'):
+                        E['units']=self.STRIPED(proc.Unit).replace(' ','')
+                    else:
+                        E['units']=''
+                    if hasattr(proc,'Coding'):
+                        E['coding']=self.STRIPED(proc.Coding).upper()
+                    else:
+                        E['coding']='PYTHON'
+                    if E['coding']=='PYTHON':
+                        env={}
+                        exec '' in env
+                        SetEnvironment(opts,env)
+                        E['env']=env
+                        EL.append(E)
+                    else:
+                        self.ERROR(99,E['coding'],E['name'])
         data['equs']=EL
+        data['equlist']=ESL
         EndInfo(self.context,MemName)
         return EL
     def GetResultList(self,opts,data):
@@ -1190,12 +1292,17 @@ class Reader1(XmlReaderBase):
         return equ
     def GetEquList(self,opts,data):
         EL=[]
+        ESL=[]
         for proc in data['doc'].simulation.processes.process:
             E={}
+            E['type']='equ'
             E['id']=len(EL)
             E['name']=self.STRIPED(proc.name)
-            E['sym']=E['name'].replace('@','__')
-            self.CheckSymbol(data,E['sym'])
+            E['names']=[E['name']]
+            sym=E['name'].replace('@','__')
+            ESL.append(sym)
+            E['syms']=[sym]
+            self.CheckSymbol(data,sym)
             E['equ']=self.GetEqu(opts,data,proc,E['name'])
             GR=CheckGrammar(data['grammar'],E['equ'],"Equation",E['name'])
             E['cont']=self.GetContr(GR[1])
@@ -1204,6 +1311,7 @@ class Reader1(XmlReaderBase):
             E['unit']=''
             EL.append(E)
         data['equs']=EL
+        data['equlist']=ESL
         return EL
     def GetResultList(self,opts,data):
         RL=[]
@@ -1929,7 +2037,7 @@ def FindExecOrder(opts,data):
                 break
         return f
 
-    def FindSym(opts,s,D):
+    def FindSym(opts,s,D,Pre):
         found=False
         FS=None
         for S in D:
@@ -1937,6 +2045,9 @@ def FindExecOrder(opts,data):
                 found=True
                 FS=S
                 break
+        if s in Pre.keys():
+            found=True
+            FS=None
         if not found:
             opts['CONTEXT'].ERROR(255,'Internal, Symbol "'+s+'" not found!')
         return FS
@@ -1944,11 +2055,13 @@ def FindExecOrder(opts,data):
     for equ in data['equs']:
         CS=set(equ['cont'])
         for uf in equ['contf']:
-            f=FindSym(opts,uf,data['funcdefs'])
-            CS=CS.union(set(f['uglobal']))
-            for cf in f['ccontf']:
-                f1=FindSym(opts,cf,data['funcdefs'])
-                CS=CS.union(set(f1['uglobal']))
+            f=FindSym(opts,uf,data['funcdefs'],data['predef'])
+            if f:
+                CS=CS.union(set(f['uglobal']))
+                for cf in f['ccontf']:
+                    f1=FindSym(opts,cf,data['funcdefs'],data['predef'])
+                    if f1:
+                        CS=CS.union(set(f1['uglobal']))
         equ['cont']=list(CS)
     EXO=[]
     EXON=[]
@@ -1964,19 +2077,20 @@ def FindExecOrder(opts,data):
                 ce,v = CanExec(data['equs'][i],EVL)
                 if ce:
                     EXO.append(i)
-                    Nm=data['equs'][i]['sym']
-                    if Nm in EVL.keys():
-                        context.ERROR(12,Nm)
-                    else:
-                        EVL[Nm]=None
-                    EXON.append(Nm)
+                    for Nm in data['equs'][i]['syms']:
+                        if Nm in EVL.keys():
+                            context.ERROR(12,Nm)
+                        else:
+                            EVL[Nm]=None
+                        EXON.append(Nm)
                     break
                 else:
                     f=False
-                    for k  in range(0,len(data['equs'])):
-                        if data['equs'][k]['sym']==v:
-                            f=True
-                            break
+                    for k in range(0,len(data['equs'])):
+                        for sym in data['equs'][k]['syms']:
+                            if sym==v:
+                                f=True
+                                break
                     if not f:
                         context.ERROR(11,v)
     if len(EXO)!=len(data['equs']):
@@ -2491,9 +2605,45 @@ def RunSimulation(opts,data,results,validation,k):
         EVL[v[0]]=GetValues(data,v[1],n)
     ApplyConstraints(data,EVL,True)
     for j in range(0,ecount):
-            EVL[data['equs'][j]['sym']]=None
+            for sym in data['equs'][j]['syms']:
+                EVL[sym]=None
+    data['usr_func_obj'].__globals__=EVL
     for j in data['exo']:
-        EVL[data['equs'][j]['sym']]=eval(data['equs'][j]['code'],EVL)
+        equ=data['equs'][j]
+        if equ['type']=='equ':
+            try:
+                MRL=eval(equ['code'],EVL)
+            except Error:
+                print "Error"
+                raise
+            except Exception,EX:
+                print "Error Ex"
+                context.ERROR(96,equ['name'],context.STR(EX))
+            if MRL is None:
+                context.ERROR(97,equ['name'])
+            EVL[equ['syms'][0]]=MRL
+        elif equ['type']=='proc':
+            env=equ['env']
+            for P in equ['cont']:
+                env[P]=EVL[P]
+            for P in equ['contf']:
+                env[P]=EVL[P]
+            try:
+                exec equ['code'] in env
+            except Error:
+                print "Error"
+                raise
+            except Exception,EX:
+                print "Error Ex"
+                context.ERROR(95,equ['name'],context.STR(EX))
+            for i,sym in enumerate(equ['syms']):
+                try:
+                    MRL=env[sym]
+                except KeyError:
+                    context.ERROR(98,equ['names'][i],equ['name'])
+                if MRL is None:
+                    context.ERROR(98,equ['names'][i],equ['name'])
+                EVL[sym]=MRL
     ApplyConstraints(data,EVL,False)
     for j in range(0,rcount):
         RR=eval(data['results'][j]['code'],EVL)

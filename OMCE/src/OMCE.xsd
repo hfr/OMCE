@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.1">
+  <!-- History -->
+  <!-- V:1.0 2012-01-20 RKe history creation -->
+  <!-- V:1.1 2012-01-30 RKe added Proc element -->
   <xs:element name="Model">
         <xs:annotation>
         	<xs:documentation>Root Element for OMC documents.</xs:documentation>
@@ -94,6 +96,7 @@
 
             <xs:choice>
             	<xs:element name="Equ" type="Equ" maxOccurs="1" minOccurs="1"/>
+            	<xs:element name="Proc" type="Proc" maxOccurs="1" minOccurs="1"/>
             	<xs:element name="Comment" type="xs:string" minOccurs="1" maxOccurs="1"></xs:element>
             </xs:choice>
             
@@ -280,6 +283,20 @@
   	<xs:attribute name="Unit" type="xs:string" use="optional"></xs:attribute>
   	<xs:attribute name="Symbol" type="xs:string" use="required"></xs:attribute>
   	<xs:attribute name="Definition" type="xs:string" use="optional"></xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="Proc" mixed="true">
+  	<xs:sequence>
+  		<xs:element name="Comment" type="xs:string" minOccurs="0"
+  			maxOccurs="unbounded">
+  		</xs:element>
+  	</xs:sequence>
+  	<xs:attribute name="Units" type="xs:string" use="optional"></xs:attribute>
+  	<xs:attribute name="Symbols" type="xs:string" use="required"></xs:attribute>
+  	<xs:attribute name="Definition" type="xs:string" use="optional"></xs:attribute>
+  	<xs:attribute name="Param" type="xs:string" use="optional"></xs:attribute>
+  	<xs:attribute name="Using" type="xs:string" use="optional"></xs:attribute>
+  	<xs:attribute name="Coding" type="xs:string" use="optional"></xs:attribute>
   </xs:complexType>
 
   <xs:complexType name="Parameter">

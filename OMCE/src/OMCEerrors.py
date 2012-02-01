@@ -113,7 +113,12 @@ error[ 90]=['End of file reached before the command was complete!',[]]
 error[ 91]=['The number of pre-run blocks is too small (see option -pr)!',[]]
 error[ 92]=['The value for Parameter "%s" must evaluate to an integer (%s)!',['<name>','<value>']]
 error[ 93]=['The value for Parameter "%s" must evaluate to a float (%s)!',['<name>','<value>']]
-error[ 94]=['The coding "%s" is unknown in function definition for %s!',['<coding>','<function>']]
+error[ 94]=['Coding "%s" is unknown in function definition for %s!',['<coding>','<function>']]
+error[ 95]=['Exception in Proc "%s": %s!',['<proc>','<message>']]
+error[ 96]=['Exception in Equ "%s": %s!',['<equ>','<message>']]
+error[ 97]=['Value is not defined after execution of Equ "%s"!',['<Equ>']]
+error[ 98]=['Value of "%s" is not defined after execution of Proc "%s"!',['<name>','<Proc>']]
+error[ 99]=['Coding "%s" is not supported in Proc %s!',['<coding>','<Proc>']]
 
 error[100]=['Script raised an error!',[]]
 
