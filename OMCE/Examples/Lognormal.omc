@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+  xs:noNamespaceSchemaLocation="OMCE.xsd"
+  Name="Lognormal"
+  Options="-mcs=200">
+  <Parameters>
+    <Parameter Name="M" Value="1.0"/>
+  </Parameters>
+  <Quantities>
+    <Quantity Symbol="M">
+    <Constant>
+      <Value>M</Value>
+    </Constant>
+    </Quantity>
+  </Quantities>
+  <Equations>
+  <Equ Symbol="Y">
+     Lognormal(0,1)/M
+  </Equ>
+  <Equ Symbol="Y_1">
+     Lognormal(0,1/2)/M
+  </Equ>
+  <Equ Symbol="Y_2">
+     Lognormal(0,1/4)/M
+  </Equ>
+  </Equations>
+  <Results>
+    <Result Symbol="Y">Y</Result>
+    <Result Symbol="Y_1">Y_1</Result>
+    <Result Symbol="Y_2">Y_2</Result>
+  </Results>
+  <Simulations>
+   <Loop Name="" Enum="i" From="1" To="1" Seed="i">
+   </Loop>
+  </Simulations>
+</Model>

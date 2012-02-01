@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model
+  xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+  xs:noNamespaceSchemaLocation="OMCE.xsd">
+  <Quantities>
+    <Quantity Symbol="R_S">
+    <Normal>
+      <Mean>10000.05300</Mean>
+      <Sigma>0.00250</Sigma>
+    </Normal>
+
+    </Quantity>
+    <Quantity Symbol="__delta__R_D">
+    <Rectangle>
+       <Mean>0.02000</Mean>
+       <Halfwidth>0.010</Halfwidth>
+    </Rectangle>
+
+    </Quantity>
+    <Quantity Symbol="__delta__R_TS">
+    <Rectangle>
+       <Mean>0.0</Mean>
+       <Halfwidth>0.00275</Halfwidth>
+    </Rectangle>
+
+    </Quantity>
+    <Quantity Symbol="r_C">
+    <Triangle>
+      <Mean>1.000000000</Mean>
+      <Halfwidth>0.0000010</Halfwidth>
+    </Triangle>
+
+    </Quantity>
+    <Quantity Symbol="r">
+    <TypeA>
+      <Value>1.0000104</Value>
+      <Value>1.0000107</Value>
+      <Value>1.0000106</Value>
+      <Value>1.0000103</Value>
+      <Value>1.0000105</Value>
+
+    </TypeA>
+
+    </Quantity>
+    <Quantity Symbol="__delta__R_TX">
+    <Rectangle>
+       <Mean>0.0</Mean>
+       <Halfwidth>0.0055</Halfwidth>
+    </Rectangle>
+
+    </Quantity>
+  </Quantities>
+  <Equations>
+  <Equ Symbol="R_X">
+     (R_S + __delta__R_D + __delta__R_TS)*r_C*r - __delta__R_TX
+  </Equ>
+  </Equations>
+  <Results>
+    <Result Symbol="R_X">R_X</Result>
+  </Results>
+</Model>

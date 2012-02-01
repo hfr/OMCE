@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model
+  xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+  xs:noNamespaceSchemaLocation="OMCE.xsd">
+  <Quantities>
+    <Quantity Symbol="K_S">
+    <Normal>
+      <Mean>0.95700</Mean>
+      <Sigma>0.00550</Sigma>
+    </Normal>
+
+    </Quantity>
+    <Quantity Symbol="__delta__K_D">
+    <Rectangle>
+       <Mean>-0.00100</Mean>
+       <Halfwidth>0.002</Halfwidth>
+    </Rectangle>
+
+    </Quantity>
+    <Quantity Symbol="M_Sr">
+    <Ushape>
+      <Mean>1.000000</Mean>
+      <Halfwidth>0.0008</Halfwidth>
+    </Ushape>
+
+    </Quantity>
+    <Quantity Symbol="M_Xc">
+    <Ushape>
+      <Mean>1.0000</Mean>
+      <Halfwidth>0.0168</Halfwidth>
+    </Ushape>
+
+    </Quantity>
+    <Quantity Symbol="M_Sc">
+    <Ushape>
+      <Mean>1.00000</Mean>
+      <Halfwidth>0.014</Halfwidth>
+    </Ushape>
+
+    </Quantity>
+    <Quantity Symbol="M_Xr">
+    <Ushape>
+      <Mean>1.000000</Mean>
+      <Halfwidth>0.0008</Halfwidth>
+    </Ushape>
+
+    </Quantity>
+    <Quantity Symbol="p_Cr">
+    <Normal>
+      <Mean>1.00000</Mean>
+      <Sigma>0.00142</Sigma>
+    </Normal>
+
+    </Quantity>
+    <Quantity Symbol="p_Cc">
+    <Normal>
+      <Mean>1.000000</Mean>
+      <Sigma>0.000142</Sigma>
+    </Normal>
+
+    </Quantity>
+    <Quantity Symbol="p">
+    <TypeA>
+      <Value>0.9772</Value>
+      <Value>0.9671</Value>
+      <Value>0.9836</Value>
+
+    </TypeA>
+
+    </Quantity>
+  </Quantities>
+  <Equations>
+  <Equ Symbol="K_X">
+     (K_S + __delta__K_D)*M_Sr*M_Xc/(M_Sc*M_Xr)*p_Cr*p_Cc*p
+  </Equ>
+  </Equations>
+  <Results>
+    <Result Symbol="K_X">K_X</Result>
+  </Results>
+</Model>

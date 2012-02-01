@@ -1,0 +1,55 @@
+#
+#  OMCED configuration file
+#
+# Port the daemon binds to
+#
+--PORT=4201
+#
+# Optional host name or ip address
+#
+#--HOST=
+#
+# This option activates the automatic service registration of the OMCE simulation
+# service at a registration server in the local network. This option is
+# deactivated by default and it should be only activated if an RPyC registration
+# server is available in the local network.
+#
+#--AUTOREGISTER
+#
+# By default uses a threaded server which creates a new thread for every
+# simulation request (connection). If the supports the fork() functionality
+# (like Linux) then this option can activate a forking server.
+#
+#--FORK
+#
+# Quiet mode. No console output.
+#
+--Q
+#
+# This option controls the directory for imports of binary data files. The client simulation 
+# can access this directory and its sub directory. The path given here is either an absolute
+# path or relative to the OMCE executable. The default is --IMPORTS=imports.
+--IMPORTS=imports
+#
+# This option controls the verbose level between 0 for all messages and 10 for
+# no messages. The default value is 2. This option can be set to a lower level
+# to see error stack trace backs in the logs.
+#
+--V=2
+#
+# This option controls the file file. By default no log file is used.
+# By default all log files are saved in the sub directory \verb:logs: relative to the
+# directory with the OMCE executable. 
+--LOG=/var/log/OMCE-server.log  
+#
+# This option activates a user verification database (dbm-clone). The filename of the database 
+# must be given after the equal sign. The path must be either an absolute file path or it is 
+# relative to the OMCE executable.
+#
+#--VDB=users.dbm
+#
+# For simple single username and password authentication enable the following option
+# 
+#--TLS username password
+#
+# [EOF]

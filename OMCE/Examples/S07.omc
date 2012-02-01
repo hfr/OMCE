@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model
+  xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+  xs:noNamespaceSchemaLocation="OMCE.xsd">
+  <Quantities>
+    <Quantity Symbol="L_S">
+    <TypeA>
+      <Value>30.033</Value>
+      <Value>30.058</Value>
+      <Value>30.018</Value>
+      <Value>30.052</Value>
+
+    </TypeA>
+
+    </Quantity>
+    <Quantity Symbol="__delta__L_S">
+    <Normal>
+      <Mean>0.00300</Mean>
+      <Sigma>0.00250</Sigma>
+    </Normal>
+
+    </Quantity>
+    <Quantity Symbol="__delta__L_D">
+    <Rectangle>
+       <Mean>0.0</Mean>
+       <Halfwidth>0.002</Halfwidth>
+    </Rectangle>
+
+    </Quantity>
+    <Quantity Symbol="__delta__L_M">
+    <Ushape>
+      <Mean>0.0</Mean>
+      <Halfwidth>0.0283</Halfwidth>
+    </Ushape>
+
+    </Quantity>
+    <Quantity Symbol="__delta__L_K">
+    <Rectangle>
+       <Mean>0.0</Mean>
+       <Halfwidth>0.003</Halfwidth>
+    </Rectangle>
+
+    </Quantity>
+    <Quantity Symbol="__delta__L_ib">
+    <Rectangle>
+       <Mean>0.0</Mean>
+       <Halfwidth>0.0005</Halfwidth>
+    </Rectangle>
+
+    </Quantity>
+    <Quantity Symbol="__delta__L_ia">
+    <Rectangle>
+       <Mean>0.0</Mean>
+       <Halfwidth>0.0005</Halfwidth>
+    </Rectangle>
+
+    </Quantity>
+    <Quantity Symbol="__delta__L_0b">
+    <Normal>
+      <Mean>0.0</Mean>
+      <Sigma>0.00200</Sigma>
+    </Normal>
+
+    </Quantity>
+    <Quantity Symbol="__delta__L_0a">
+    <Normal>
+      <Mean>0.0</Mean>
+      <Sigma>0.00200</Sigma>
+    </Normal>
+
+    </Quantity>
+  </Quantities>
+  <Equations>
+  <Equ Symbol="L_X">
+     L_S + __delta__L_S + __delta__L_D + __delta__L_M + __delta__L_K + __delta__L_ib - __delta__L_ia + __delta__L_0b - __delta__L_0a
+  </Equ>
+  </Equations>
+  <Results>
+    <Result Symbol="L_X">L_X</Result>
+  </Results>
+</Model>

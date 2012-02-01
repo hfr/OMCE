@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+  xs:noNamespaceSchemaLocation="OMCE.xsd"
+  Name="Cauchy"
+  Options="-mcs=200">
+  <Parameters>
+    <Parameter Name="M" Value="1.0"/>
+  </Parameters>
+  <Quantities>
+    <Quantity Symbol="M">
+    <Constant>
+      <Value>M</Value>
+    </Constant>
+    </Quantity>
+  </Quantities>
+  <Equations>
+  <Equ Symbol="Y">
+     Cauchy(0,1)/M
+  </Equ>
+  </Equations>
+  <Results>
+    <Result Symbol="Y">Y</Result>
+  </Results>
+  <Simulations>
+   <Loop Name="" Enum="i" From="1" To="1" Seed="i">
+   </Loop>
+  </Simulations>
+</Model>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulation>
+  <processes>
+    <process name="R_X">
+      <formula>
+        (R_S + @delta@R_D + @delta@R_TS)*r_C*r - @delta@R_TX
+      </formula>
+    </process>
+  </processes>
+  <calculation outputdigits="14" mcsimulations="100">
+    <analyse mode="on" histbars="200"/>
+    <variable name="R_S">
+      <distribution>
+        <gauss>
+          <mu>10000.05300</mu>
+          <sigma>0.00250</sigma>
+        </gauss>
+      </distribution>
+    </variable>
+    <variable name="@delta@R_D">
+      <distribution>
+        <rectangle>
+          <mean>0.02000</mean>
+          <width>0.010</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <variable name="@delta@R_TS">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>0.00275</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <variable name="r_C">
+      <distribution>
+        <triangle>
+          <mean>1.000000000</mean>
+          <width>0.0000010</width>
+        </triangle>
+      </distribution>
+    </variable>
+    <variable name="r">
+      <distribution>
+        <studentt>
+          <values>
+            <value>1.0000104</value>
+            <value>1.0000107</value>
+            <value>1.0000106</value>
+            <value>1.0000103</value>
+            <value>1.0000105</value>
+          </values>
+        </studentt>
+      </distribution>
+    </variable>
+    <variable name="@delta@R_TX">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>0.0055</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <uncertainty>
+      <formula name="R_X">R_X</formula>
+    </uncertainty>
+  </calculation>
+</simulation>

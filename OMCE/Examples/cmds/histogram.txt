@@ -1,0 +1,16 @@
+<Script 
+  Name=""
+  Title=""
+  Author=""
+  Version=""
+  Date=""
+  Options="">
+  <Description>
+  </Description>
+  <Parameters>
+  </Parameters>
+<Python Section="1" Enable="1">
+R=DataFiles[0]
+BarDiagram(R("Bin[:]",0),R("LowBinLimit",0),R("BinWidth",0))
+</Python>
+</Script>

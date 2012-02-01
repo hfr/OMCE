@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model
+  xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+  xs:noNamespaceSchemaLocation="OMCE.xsd">
+  <Quantities>
+    <Quantity Symbol="l_S">
+    <Normal>
+      <Mean>50.0000200</Mean>
+      <Sigma>0.0000150</Sigma>
+    </Normal>
+
+    </Quantity>
+    <Quantity Symbol="__delta__l_D">
+    <Rectangle>
+       <Mean>0.0</Mean>
+       <Halfwidth>0.000030</Halfwidth>
+    </Rectangle>
+
+    </Quantity>
+    <Quantity Symbol="__delta__l">
+    <Student>
+      <Mean>-0.00009400</Mean>
+      <Scalefactor>0.00000475</Scalefactor>
+      <Dof>13</Dof>
+    </Student>
+
+    </Quantity>
+    <Quantity Symbol="__delta__l_C">
+    <Rectangle>
+       <Mean>0.0</Mean>
+       <Halfwidth>0.000032</Halfwidth>
+    </Rectangle>
+
+    </Quantity>
+    <Quantity Symbol="L">
+    <Constant>
+      <Value>50.0</Value>
+    </Constant>
+
+    </Quantity>
+    <Quantity Symbol="__alpha___av">
+    <Rectangle>
+       <Mean>0.000011500</Mean>
+       <Halfwidth>0.000001</Halfwidth>
+    </Rectangle>
+
+    </Quantity>
+    <Quantity Symbol="__delta__t">
+    <Rectangle>
+       <Mean>0.0</Mean>
+       <Halfwidth>0.05</Halfwidth>
+    </Rectangle>
+
+    </Quantity>
+    <Quantity Symbol="__delta____alpha__">
+    <Triangle>
+      <Mean>0.0</Mean>
+      <Halfwidth>0.000002</Halfwidth>
+    </Triangle>
+
+    </Quantity>
+    <Quantity Symbol="__Delta__t_av">
+    <Rectangle>
+       <Mean>0.0</Mean>
+       <Halfwidth>0.5</Halfwidth>
+    </Rectangle>
+
+    </Quantity>
+    <Quantity Symbol="u_at">
+    <Normal>
+      <Mean>0.0</Mean>
+      <Sigma>0.000000236</Sigma>
+    </Normal>
+
+    </Quantity>
+    <Quantity Symbol="__delta__l_V">
+    <Rectangle>
+       <Mean>0.0</Mean>
+       <Halfwidth>0.0000067</Halfwidth>
+    </Rectangle>
+
+    </Quantity>
+  </Quantities>
+  <Equations>
+  <Equ Symbol="l_X">
+     l_S + __delta__l_D + __delta__l + __delta__l_C - L*(__alpha___av*__delta__t + __delta____alpha__*__Delta__t_av + u_at) - __delta__l_V
+  </Equ>
+  </Equations>
+  <Results>
+    <Result Symbol="l_X">l_X</Result>
+  </Results>
+</Model>

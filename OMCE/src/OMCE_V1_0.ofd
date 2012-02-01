@@ -1,0 +1,24 @@
+#
+# Native OMCE output format definition file
+# This is the output file definition used with OMCE version 1.0.x
+#
+-separator=","
+-header=1
+-extension=".ohd"
+-quotechar="
+Filename=filename
+Symbol=name
+ID=id
+Runs=runs
+Mean=average
+StdUnc=stddev
+Low95=low95
+High95=high95
+Low99=low99
+High99=high99
+Low99.9=low999
+High99.9=high999
+BinCount=bincount
+LowBinLimit=lowbinlimit
+BinWidth=binwidth
+Bin[%s]=BINS

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+  xs:noNamespaceSchemaLocation="OMCE.xsd">
+  <Quantities>
+    <Quantity Symbol="x1">
+    <Normal>
+      <Mean>3.2</Mean>
+      <Sigma>0.1</Sigma>
+    </Normal>
+    </Quantity>
+    <Quantity Symbol="x2">
+    <Normal>
+      <Mean>3.8</Mean>
+      <Sigma>0.1</Sigma>
+    </Normal>
+    </Quantity>
+    <Quantity Symbol="x3">
+    <Normal>
+      <Mean>3</Mean>
+      <Sigma>0.1</Sigma>
+    </Normal>
+    </Quantity>
+    <Quantity Symbol="x4">
+    <Normal>
+      <Mean>4</Mean>
+      <Sigma>0.1</Sigma>
+    </Normal>
+    </Quantity>
+  </Quantities>
+  <Correlations>
+    <Coefficient Q1="x1" Q2="x2" Value="0.9118" />
+    <Coefficient Q1="x1" Q2="x3" Value="0.5" />
+    <Coefficient Q1="x1" Q2="x4" Value="0.53333" />
+    <Coefficient Q1="x2" Q2="x3" Value="0.5" />
+    <Coefficient Q1="x2" Q2="x4" Value="0.5" />
+    <Coefficient Q1="x3" Q2="x4" Value="0.5" />
+  </Correlations>
+  <Equations>
+  <Equ Symbol="y">
+     x1 + x2 + x3 + x4
+  </Equ>
+  </Equations>
+  <Results>
+    <Result Symbol="y">y</Result>
+  </Results>
+</Model>

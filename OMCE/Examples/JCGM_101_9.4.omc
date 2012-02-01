@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+  xs:noNamespaceSchemaLocation="OMCE.xsd">
+  <Quantities>
+    <Quantity Symbol="__delta__x_1__comma__0">
+    <Normal>
+      <Mean>0.0</Mean>
+      <Sigma>0.00500</Sigma>
+    </Normal>
+    </Quantity>
+    <Quantity Symbol="__delta__x_2">
+    <Normal>
+      <Mean>0.0</Mean>
+      <Sigma>0.00500</Sigma>
+    </Normal>
+    </Quantity>
+    <Quantity Symbol="__delta__x_1__comma__1">
+    <Normal>
+      <Mean>0.01000</Mean>
+      <Sigma>0.00500</Sigma>
+    </Normal>
+    </Quantity>
+    <Quantity Symbol="__delta__x_1__comma__2">
+    <Normal>
+      <Mean>0.05000</Mean>
+      <Sigma>0.00500</Sigma>
+    </Normal>
+    </Quantity>
+  </Quantities>
+  <Equations>
+  <Equ Symbol="__delta__y_0">
+     pow(__delta__x_1__comma__0,2) + pow(__delta__x_2,2)
+  </Equ>
+  <Equ Symbol="__delta__y_1">
+     pow(__delta__x_1__comma__1,2) + pow(__delta__x_2,2)
+  </Equ>
+  <Equ Symbol="__delta__y_2">
+     pow(__delta__x_1__comma__2,2) + pow(__delta__x_2,2)
+  </Equ>
+  </Equations>
+  <Results>
+    <Result Symbol="__delta__y_0">__delta__y_0</Result>
+    <Result Symbol="__delta__y_1">__delta__y_1</Result>
+    <Result Symbol="__delta__y_2">__delta__y_2</Result>
+  </Results>
+</Model>

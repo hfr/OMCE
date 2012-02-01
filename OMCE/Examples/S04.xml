@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulation>
+  <processes>
+    <process name="l_X">
+      <formula>
+        l_S + @delta@l_D + @delta@l + @delta@l_C - L*(@alpha@_av*@delta@t + @delta@@alpha@*@Delta@t_av + u_at) - @delta@l_V
+      </formula>
+    </process>
+  </processes>
+  <calculation outputdigits="14" mcsimulations="100">
+    <analyse mode="on" histbars="200"/>
+    <variable name="l_S">
+      <distribution>
+        <gauss>
+          <mu>50.0000200</mu>
+          <sigma>0.0000150</sigma>
+        </gauss>
+      </distribution>
+    </variable>
+    <variable name="@delta@l_D">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>0.000030</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <variable name="@delta@l">
+      <distribution>
+        <studentt>
+          <xbar>-0.00009400</xbar>
+          <std>0.00000475</std>
+          <dgf>13</dgf>
+        </studentt>
+      </distribution>
+    </variable>
+    <variable name="@delta@l_C">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>0.000032</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <variable name="L">
+      <distribution>
+        <constant>
+          <value>50.0</value>
+        </constant>
+      </distribution>
+    </variable>
+    <variable name="@alpha@_av">
+      <distribution>
+        <rectangle>
+          <mean>0.000011500</mean>
+          <width>0.000001</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <variable name="@delta@t">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>0.05</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <variable name="@delta@@alpha@">
+      <distribution>
+        <triangle>
+          <mean>0.0</mean>
+          <width>0.000002</width>
+        </triangle>
+      </distribution>
+    </variable>
+    <variable name="@Delta@t_av">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>0.5</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <variable name="u_at">
+      <distribution>
+        <gauss>
+          <mu>0.0</mu>
+          <sigma>0.000000236</sigma>
+        </gauss>
+      </distribution>
+    </variable>
+    <variable name="@delta@l_V">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>0.0000067</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <uncertainty>
+      <formula name="l_X">l_X</formula>
+    </uncertainty>
+  </calculation>
+</simulation>

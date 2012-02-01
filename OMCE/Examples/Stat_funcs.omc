@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+  xs:noNamespaceSchemaLocation="OMCE.xsd"
+  Name=""
+  Options="">
+  <Quantities>
+  </Quantities>
+  <Equations>
+  <Equ Symbol="X_1">
+    Rectangle(1,1)
+  </Equ>
+  <Equ Symbol="X_2">
+    Triangle(1,1)
+  </Equ>
+  <Equ Symbol="X_3">
+    Trapez(1,1,0.5)
+  </Equ>
+  <Equ Symbol="X_4">
+    Chisquare(1,1,3)
+  </Equ>
+  <Equ Symbol="X_5">
+    Normal(1,1)
+  </Equ>
+  <Equ Symbol="X_6">
+    Student(1,1,4)
+  </Equ>
+  <Equ Symbol="X_7">
+    Ushape(1,1)
+  </Equ>
+  <Equ Symbol="X_8">
+    Poisson(10)
+  </Equ>
+  <Equ Symbol="X_9">
+    Ctrapez(1,1,0.5)
+  </Equ>
+  <Equ Symbol="X_10">
+    Exponent(5)
+  </Equ>
+  <Equ Symbol="X_11">
+    Gamma(4,1.0)
+  </Equ>
+  <Equ Symbol="X_12">
+    Gamma(4,2.0)
+  </Equ>
+  <Equ Symbol="X_13">
+    Laplace(1,1)
+  </Equ>
+  </Equations>
+  <Results>
+    <Result Symbol="X_1" Unit="" Definition="Rectangle(1,1)">X_1</Result>
+    <Result Symbol="X_2" Unit="" Definition="Triangle(1,1)">X_2</Result>
+    <Result Symbol="X_3" Unit="" Definition="Trapez(1,1,0.5)">X_3</Result>
+    <Result Symbol="X_4" Unit="" Definition="Chisquare(1,1,3)">X_4</Result>
+    <Result Symbol="X_5" Unit="" Definition="Normal(1,1)">X_5</Result>
+    <Result Symbol="X_6" Unit="" Definition="Student(1,1,4)">X_6</Result>
+    <Result Symbol="X_7" Unit="" Definition="Ushape(1,1)">X_7</Result>
+    <Result Symbol="X_8" Unit="" Definition="Poisson(10)">X_8</Result>
+    <Result Symbol="X_9" Unit="" Definition="Ctrapez(1,1,0.5)">X_9</Result>
+    <Result Symbol="X_10" Unit="" Definition="Exponent(5)">X_10</Result>
+    <Result Symbol="X_11" Unit="" Definition="Gamma(4,1.0)">X_11</Result>
+    <Result Symbol="X_12" Unit="" Definition="Gamma(4,2.0)">X_12</Result>
+    <Result Symbol="X_13" Unit="" Definition="Laplace(1,1)">X_13</Result>
+  </Results>
+</Model>

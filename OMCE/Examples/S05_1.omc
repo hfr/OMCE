@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model
+  xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+  xs:noNamespaceSchemaLocation="OMCE.xsd">
+  <Quantities>
+    <Quantity Symbol="t_S">
+    <Student>
+      <Mean>1000.500</Mean>
+      <Scalefactor>0.100</Scalefactor>
+      <Dof>9</Dof>
+    </Student>
+
+    </Quantity>
+    <Quantity Symbol="__delta__t_S">
+    <Normal>
+      <Mean>0.0</Mean>
+      <Sigma>0.150</Sigma>
+    </Normal>
+
+    </Quantity>
+    <Quantity Symbol="C_S">
+    <Constant>
+      <Value>0.077</Value>
+    </Constant>
+
+    </Quantity>
+    <Quantity Symbol="__delta__V_iS1">
+    <Normal>
+      <Mean>0.0</Mean>
+      <Sigma>1.00</Sigma>
+    </Normal>
+
+    </Quantity>
+    <Quantity Symbol="__delta__V_iS2">
+    <Rectangle>
+       <Mean>0.0</Mean>
+       <Halfwidth>0.5</Halfwidth>
+    </Rectangle>
+
+    </Quantity>
+    <Quantity Symbol="__delta__V_R">
+    <Rectangle>
+       <Mean>0.0</Mean>
+       <Halfwidth>2.0</Halfwidth>
+    </Rectangle>
+
+    </Quantity>
+    <Quantity Symbol="C_S0">
+    <Constant>
+      <Value>0.189</Value>
+    </Constant>
+
+    </Quantity>
+    <Quantity Symbol="__delta__t_0S">
+    <Rectangle>
+       <Mean>0.0</Mean>
+       <Halfwidth>0.1</Halfwidth>
+    </Rectangle>
+
+    </Quantity>
+    <Quantity Symbol="__delta__t_D">
+    <Rectangle>
+       <Mean>0.0</Mean>
+       <Halfwidth>0.3</Halfwidth>
+    </Rectangle>
+
+    </Quantity>
+    <Quantity Symbol="__delta__t_F">
+    <Rectangle>
+       <Mean>0.0</Mean>
+       <Halfwidth>1</Halfwidth>
+    </Rectangle>
+
+    </Quantity>
+  </Quantities>
+  <Equations>
+  <Equ Symbol="t_X">
+     t_S + __delta__t_S + C_S*(__delta__V_iS1 + __delta__V_iS2 + __delta__V_R) - C_S/C_S0*__delta__t_0S + __delta__t_D + __delta__t_F
+  </Equ>
+  </Equations>
+  <Results>
+    <Result Symbol="t_X">t_X</Result>
+  </Results>
+</Model>

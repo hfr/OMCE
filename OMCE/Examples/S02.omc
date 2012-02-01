@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model
+  xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+  xs:noNamespaceSchemaLocation="OMCE.xsd">
+  <Quantities>
+    <Quantity Symbol="m_S">
+    <Normal>
+      <Mean>10000.0050</Mean>
+      <Sigma>0.0225</Sigma>
+    </Normal>
+
+    </Quantity>
+    <Quantity Symbol="__delta__m_D">
+    <Rectangle>
+       <Mean>0.0</Mean>
+       <Halfwidth>0.015</Halfwidth>
+    </Rectangle>
+
+    </Quantity>
+    <Quantity Symbol="__delta___m">
+    <Student>
+      <Mean>0.0200</Mean>
+      <Scalefactor>0.0142</Scalefactor>
+      <Dof>52</Dof>
+    </Student>
+
+    </Quantity>
+    <Quantity Symbol="__delta__m_C">
+    <Rectangle>
+       <Mean>0.0</Mean>
+       <Halfwidth>0.010</Halfwidth>
+    </Rectangle>
+
+    </Quantity>
+    <Quantity Symbol="__delta___B">
+    <Rectangle>
+       <Mean>0.0</Mean>
+       <Halfwidth>0.010</Halfwidth>
+    </Rectangle>
+
+    </Quantity>
+  </Quantities>
+  <Equations>
+  <Equ Symbol="m_X">
+     m_S + __delta__m_D + __delta___m + __delta__m_C + __delta___B
+  </Equ>
+  </Equations>
+  <Results>
+    <Result Symbol="m_X">m_X</Result>
+  </Results>
+</Model>

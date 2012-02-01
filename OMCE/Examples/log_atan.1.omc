@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+  xs:noNamespaceSchemaLocation="OMCE.xsd">
+  <Quantities>
+    <Quantity Symbol="x">
+    <Normal>
+      <Mean>1</Mean>
+      <Sigma>1</Sigma>
+    </Normal>
+    </Quantity>
+  </Quantities>
+  <Equations>
+  <Equ Symbol="y">
+    1.0/5.0*log(x) + 1.0/2.0*atan(x)
+  </Equ>
+  </Equations>
+  <Results>
+    <Result Symbol="y">y</Result>
+  </Results>
+</Model>

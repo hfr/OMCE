@@ -1,0 +1,15 @@
+#
+# Native OMCE var-file format definition
+#
+-separator=","
+-header=1
+-extension=".var"
+-quotechar="
+SID=SID
+ID=id
+Symbol=name
+Runs=runs
+Binfile=filename
+R[%s]=CORR
+IR[%s]=IRCORR
+

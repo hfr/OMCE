@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulation>
+  <processes>
+    <process name="K_X">
+      <formula>
+        (K_S + @delta@K_D)*M_Sr*M_Xc/(M_Sc*M_Xr)*p_Cr*p_Cc*p
+      </formula>
+    </process>
+  </processes>
+  <calculation outputdigits="14" mcsimulations="100">
+    <analyse mode="on" histbars="200"/>
+    <variable name="K_S">
+      <distribution>
+        <gauss>
+          <mu>0.95700</mu>
+          <sigma>0.00550</sigma>
+        </gauss>
+      </distribution>
+    </variable>
+    <variable name="@delta@K_D">
+      <distribution>
+        <rectangle>
+          <mean>-0.00100</mean>
+          <width>0.002</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <variable name="M_Sr">
+      <distribution>
+        <arcsine>
+          <lower>1.000000 - 0.0008</lower>
+          <upper>1.000000 + 0.0008</upper>
+        </arcsine>
+      </distribution>
+    </variable>
+    <variable name="M_Xc">
+      <distribution>
+        <arcsine>
+          <lower>1.0000 - 0.0168</lower>
+          <upper>1.0000 + 0.0168</upper>
+        </arcsine>
+      </distribution>
+    </variable>
+    <variable name="M_Sc">
+      <distribution>
+        <arcsine>
+          <lower>1.00000 - 0.014</lower>
+          <upper>1.00000 + 0.014</upper>
+        </arcsine>
+      </distribution>
+    </variable>
+    <variable name="M_Xr">
+      <distribution>
+        <arcsine>
+          <lower>1.000000 - 0.0008</lower>
+          <upper>1.000000 + 0.0008</upper>
+        </arcsine>
+      </distribution>
+    </variable>
+    <variable name="p_Cr">
+      <distribution>
+        <gauss>
+          <mu>1.00000</mu>
+          <sigma>0.00142</sigma>
+        </gauss>
+      </distribution>
+    </variable>
+    <variable name="p_Cc">
+      <distribution>
+        <gauss>
+          <mu>1.000000</mu>
+          <sigma>0.000142</sigma>
+        </gauss>
+      </distribution>
+    </variable>
+    <variable name="p">
+      <distribution>
+        <studentt>
+          <values>
+            <value>0.9772</value>
+            <value>0.9671</value>
+            <value>0.9836</value>
+          </values>
+        </studentt>
+      </distribution>
+    </variable>
+    <uncertainty>
+      <formula name="K_X">K_X</formula>
+    </uncertainty>
+  </calculation>
+</simulation>

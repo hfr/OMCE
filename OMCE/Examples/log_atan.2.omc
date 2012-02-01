@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+  xs:noNamespaceSchemaLocation="OMCE.xsd">
+  <Quantities>
+    <Quantity Symbol="x">
+    <Trapez>
+      <Mean>1.00</Mean>
+      <Halfwidth>0.01095</Halfwidth>
+      <Beta>0.5</Beta>
+    </Trapez>
+    </Quantity>
+  </Quantities>
+  <Equations>
+  <Equ Symbol="y">
+    1/5*log(x) + 1/2*atan(x)
+  </Equ>
+  </Equations>
+  <Results>
+    <Result Symbol="y">y</Result>
+  </Results>
+</Model>

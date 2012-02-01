@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="Model">
+        <xs:annotation>
+        	<xs:documentation>Root Element for OMC documents.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+        	<xs:sequence>
+        		<xs:element name="Comment" type="xs:string"
+        			minOccurs="0" maxOccurs="1">
+        		</xs:element>
+        		<xs:element name="Parameters" type="Parameters"
+        			minOccurs="0" maxOccurs="1">
+        		</xs:element>
+        		<xs:element name="Quantities" type="Quantities"
+        			minOccurs="0" maxOccurs="1" />
+        		<xs:element name="Correlations" type="Correlations"
+        			minOccurs="0" maxOccurs="1">
+        		</xs:element>
+        		<xs:element name="Functions" type="Functions"
+        			minOccurs="0" maxOccurs="1">
+        		</xs:element>
+        		<xs:element name="Equations" type="Equations"
+        			minOccurs="0" maxOccurs="1" />
+        		<xs:element name="Constraints" type="Constraints"
+        			minOccurs="0" maxOccurs="1">
+        		</xs:element>
+        		<xs:element name="Results" type="Results" minOccurs="1"
+        			maxOccurs="1" />
+
+        		<xs:element name="Simulations" type="Simulations"
+        			minOccurs="0" maxOccurs="1">
+        		</xs:element>
+        	</xs:sequence>
+        	<xs:attribute name="Name" type="xs:string" use="optional">
+        		<xs:annotation>
+        			<xs:documentation>
+        				The name string contains an optional name of the
+        				model.
+        			</xs:documentation>
+        		</xs:annotation>
+        	</xs:attribute>
+        	<xs:attribute name="Options" type="xs:string"
+        		use="optional">
+        		<xs:annotation>
+        			<xs:documentation>
+        				The options string contains application specific
+        				options as a sequence of -option=value entries.
+        			</xs:documentation>
+        		</xs:annotation>
+        	</xs:attribute>
+        	<xs:attribute name="Title" type="xs:string"></xs:attribute>
+        </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="Quantities">
+    <xs:sequence>
+      <xs:element name="Quantity" type="Quantity" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Quantity">
+  	<xs:sequence>
+  		<xs:element name="Comment" type="xs:string" minOccurs="0"
+  			maxOccurs="1">
+  		</xs:element>
+  		<xs:choice minOccurs="1" maxOccurs="1">
+  			<xs:element name="Constant" type="Constant" />
+  			<xs:element name="Normal" type="Normal" />
+  			<xs:element name="Rectangle" type="Limited" />
+  			<xs:element name="Triangle" type="Limited" />
+  			<xs:element name="Trapez" type="Trapez" />
+  			<xs:element name="Ushape" type="Limited" />
+  			<xs:element name="Student" type="Student" />
+  			<xs:element name="TypeA" type="TypeA" />
+  			<xs:element name="Poisson" type="MeanValue" />
+  			<xs:element name="Bayesian" type="Bayesian"></xs:element>
+  			<xs:element name="Ctrapez" type="Trapez"></xs:element>
+  			<xs:element name="Exponent" type="MeanValue"></xs:element>
+  			<xs:element name="Gamma" type="Gamma"></xs:element>
+  			<xs:element name="Discrete" type="Discrete"></xs:element>
+  			<xs:element name="Import" type="Import"></xs:element>
+  			<xs:element name="Chisquare" type="Chisquare"></xs:element>
+  		</xs:choice>
+  	</xs:sequence>
+  	<xs:attribute name="Symbol" type="xs:string" use="required" />
+  	<xs:attribute name="Unit" type="xs:string" use="optional" />
+  	<xs:attribute name="Definition" type="xs:string" use="optional"></xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="Equations">
+    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+
+            <xs:choice>
+            	<xs:element name="Equ" type="Equ" maxOccurs="1" minOccurs="1"/>
+            	<xs:element name="Comment" type="xs:string" minOccurs="1" maxOccurs="1"></xs:element>
+            </xs:choice>
+            
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Results">
+    <xs:sequence minOccurs="1" maxOccurs="unbounded">
+
+    	<xs:choice>
+    		<xs:element name="Result" type="Result"
+    			maxOccurs="1" minOccurs="1"/>
+    		<xs:element name="Comment" type="xs:string" minOccurs="1" maxOccurs="1"></xs:element>
+    	</xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Result" mixed="true">
+  	<xs:sequence>
+  		<xs:element name="Comment" type="xs:string" minOccurs="0"
+  			maxOccurs="unbounded">
+  		</xs:element>
+  	</xs:sequence>
+  	<xs:attribute name="Symbol" type="xs:string" use="required" />
+  	<xs:attribute name="Unit" type="xs:string" use="optional" />
+  	<xs:attribute name="Definition" type="xs:string" use="optional"></xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="Student">
+    <xs:sequence>
+	    <xs:element name="Mean" type="Param"/>
+	    <xs:element name="Scalefactor" type="Param"/>
+        <xs:element name="Dof" type="Param"/>
+	  </xs:sequence>
+  </xs:complexType>  
+
+  <xs:complexType name="TypeA">
+    <xs:sequence>
+     	<xs:element name="Value" type="Value" minOccurs="2" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>  
+
+  <xs:complexType name="Normal">
+    <xs:sequence>
+      <xs:element name="Mean" type="Param"/>
+      <xs:element name="Sigma" type="Param"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Limited">
+    <xs:sequence>
+      <xs:element name="Mean" type="Param"/>
+      <xs:element name="Halfwidth" type="Param"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="Constant">
+    <xs:sequence>
+      <xs:element name="Value" type="Param"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Trapez">
+    <xs:sequence>
+      <xs:element name="Mean" type="Param"/>
+      <xs:element name="Halfwidth" type="Param"/>
+      <xs:element name="Beta" type="Param"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+   
+  <xs:complexType name="MeanValue">
+    <xs:sequence>
+      <xs:element name="Mean" type="Param"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="Value">
+  	<xs:restriction base="xs:double"></xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Param">
+  	<xs:restriction base="xs:string"></xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="Coefficient">
+
+  	<xs:attribute name="Q1" type="xs:string"></xs:attribute>
+  	<xs:attribute name="Q2" type="xs:string"></xs:attribute>
+  	<xs:attribute name="Value" type="xs:double"></xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="Correlations">
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:choice><xs:element name="Comment" type="xs:string" minOccurs="1" maxOccurs="1">
+        	</xs:element><xs:element name="Coefficient" type="Coefficient" minOccurs="1" maxOccurs="1">
+        	</xs:element></xs:choice>
+        </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Bayesian">
+  	<xs:sequence>
+  		<xs:element name="Value" type="Value" minOccurs="4"
+  			maxOccurs="unbounded">
+  		</xs:element>
+  	</xs:sequence>
+  	<xs:attribute name="Distribution" type="xs:string" use="optional"></xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="Discrete">
+  	<xs:choice>
+  		<xs:sequence>
+  			<xs:element name="Binfile" type="Binfile"></xs:element>
+  			<xs:element name="Shift" type="Param" minOccurs="0" maxOccurs="1"></xs:element>
+  			<xs:element name="Scale" type="Param" minOccurs="0" maxOccurs="1"></xs:element>
+  		</xs:sequence>
+  	</xs:choice>
+  </xs:complexType>
+
+  <xs:simpleType name="Filename">
+  	<xs:restriction base="xs:string"></xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="Binfile">
+  	<xs:attribute name="Filename" type="Filename" use="required"></xs:attribute>
+  	<xs:attribute name="Syspath" type="xs:int" use="optional"></xs:attribute>
+  	<xs:attribute name="Index" type="xs:int" use="optional"></xs:attribute>
+  	<xs:attribute name="Q" type="xs:string" use="optional"></xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="Constraints">
+        <xs:sequence minOccurs="1" maxOccurs="unbounded">
+            <xs:choice><xs:element name="Comment" type="xs:string" minOccurs="0" maxOccurs="1"></xs:element>
+            <xs:element name="Constraint" type="Constraint" minOccurs="1" maxOccurs="1">
+        	</xs:element></xs:choice>
+        </xs:sequence>
+        
+  </xs:complexType>
+
+  <xs:complexType name="Constraint">
+  	<xs:simpleContent>
+  		<xs:extension base="xs:string">
+  			<xs:attribute name="Q" type="xs:string"></xs:attribute>
+  		</xs:extension>
+  	</xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="Import">
+  	<xs:sequence>
+
+  		<xs:element name="Binfile" type="Binfile"></xs:element>
+  	</xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Functions">
+  	<xs:sequence minOccurs="1" maxOccurs="unbounded">
+
+  		<xs:choice>
+  			<xs:element name="Function" type="Function" minOccurs="1"
+  				maxOccurs="1">
+  			</xs:element>
+  			<xs:element name="Comment" type="xs:string" minOccurs="1" maxOccurs="1"></xs:element>
+  		</xs:choice>
+  	</xs:sequence>
+  </xs:complexType>
+
+
+  <xs:complexType name="Function" mixed="true">
+  	<xs:sequence>
+  		<xs:element name="Comment" type="xs:string" minOccurs="0" maxOccurs="unbounded"></xs:element>
+  	</xs:sequence>
+	<xs:attribute name="Symbol" type="xs:string"></xs:attribute>
+  	<xs:attribute name="Param" type="xs:string" use="optional"></xs:attribute>
+  	<xs:attribute name="Global" type="xs:string" use="optional"></xs:attribute>
+  	<xs:attribute name="Coding" type="xs:string" use="optional"></xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="Equ" mixed="true">
+  	<xs:sequence>
+  		<xs:element name="Comment" type="xs:string" minOccurs="0"
+  			maxOccurs="unbounded">
+  		</xs:element>
+  	</xs:sequence>
+  	<xs:attribute name="Unit" type="xs:string" use="optional"></xs:attribute>
+  	<xs:attribute name="Symbol" type="xs:string" use="required"></xs:attribute>
+  	<xs:attribute name="Definition" type="xs:string" use="optional"></xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="Parameter">
+  <xs:attribute name="Name" type="xs:string" use="required"></xs:attribute>
+  <xs:attribute name="Value" type="xs:string" use="required"></xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="Parameters">
+  	<xs:sequence minOccurs="1" maxOccurs="unbounded">
+  		<xs:choice>
+  			<xs:element name="Parameter" type="Parameter" minOccurs="1" maxOccurs="1"></xs:element>
+  			<xs:element name="Comment" type="xs:string" minOccurs="1" maxOccurs="1"></xs:element>
+  		</xs:choice>
+  	</xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Simulations">
+  	<xs:sequence minOccurs="1" maxOccurs="unbounded">
+  		<xs:choice>
+  			<xs:element name="Comment" type="xs:string" minOccurs="0" maxOccurs="1"></xs:element>
+  			<xs:element name="Simulation" type="Simulation" minOccurs="0" maxOccurs="1"></xs:element>
+  			<xs:element name="Loop" type="Loop" minOccurs="0" maxOccurs="1"></xs:element>
+  		</xs:choice>
+  	</xs:sequence>
+  </xs:complexType>
+
+
+  <xs:complexType name="Loop">
+  	<xs:sequence minOccurs="0" maxOccurs="unbounded">
+  		<xs:element name="Parameter" type="Parameter"></xs:element>
+  	</xs:sequence>
+  	<xs:attribute name="Options" type="xs:string" use="optional"></xs:attribute>
+  	<xs:attribute name="Enum" type="xs:string" use="optional"></xs:attribute>
+  	<xs:attribute name="From" type="xs:double" use="required"></xs:attribute>
+  	<xs:attribute name="To" type="xs:double" use="required"></xs:attribute>
+  	<xs:attribute name="Step" type="xs:double" use="optional"
+  		default="1">
+  	</xs:attribute>
+  	<xs:attribute name="Name" type="xs:string"></xs:attribute>
+  	<xs:attribute name="Seed" type="xs:string" use="optional"></xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="Simulation">
+  	<xs:sequence minOccurs="0" maxOccurs="unbounded">
+  		<xs:element name="Parameter" type="Parameter"></xs:element>
+  	</xs:sequence>
+  	<xs:attribute name="Options" type="xs:string" use="optional"></xs:attribute>
+  	<xs:attribute name="Binfile" type="xs:string" use="optional"></xs:attribute>
+  	<xs:attribute name="Name" type="xs:string" use="optional"></xs:attribute>
+  	<xs:attribute name="Seed" type="xs:string" use="optional"></xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="Chisquare">
+      <xs:sequence>
+	    <xs:element name="Shift" type="Param"/>
+	    <xs:element name="Scalefactor" type="Param"/>
+        <xs:element name="Dof" type="Param"/>
+	  </xs:sequence>
+    </xs:complexType>
+
+  <xs:complexType name="Gamma">
+  	<xs:sequence>
+  		<xs:element name="Shape" type="Param"></xs:element>
+  		<xs:element name="Scale" type="Param"></xs:element>
+  	</xs:sequence>
+  </xs:complexType>
+</xs:schema>

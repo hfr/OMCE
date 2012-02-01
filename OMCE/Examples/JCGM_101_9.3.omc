@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+  xs:noNamespaceSchemaLocation="OMCE.xsd">
+  <Quantities>
+    <Quantity Symbol="m_R__comma__c">
+    <Normal>
+      <Mean>100000.0000000</Mean>
+      <Sigma>0.0500</Sigma>
+    </Normal>
+    </Quantity>
+    <Quantity Symbol="__delta__m_R__comma__c">
+    <Normal>
+      <Mean>1.2340</Mean>
+      <Sigma>0.0200</Sigma>
+    </Normal>
+    </Quantity>
+    <Quantity Symbol="__rho___a">
+    <Rectangle>
+       <Mean>1.2000</Mean>
+       <Halfwidth>0.1</Halfwidth>
+    </Rectangle>
+    </Quantity>
+    <Quantity Symbol="__rho___a0">
+    <Constant>
+      <Value>1.2</Value>
+    </Constant>
+    </Quantity>
+    <Quantity Symbol="__rho___W">
+    <Rectangle>
+       <Mean>8000</Mean>
+       <Halfwidth>1000.</Halfwidth>
+    </Rectangle>
+    </Quantity>
+    <Quantity Symbol="__rho___R">
+    <Rectangle>
+       <Mean>8000.0000</Mean>
+       <Halfwidth>0.05</Halfwidth>
+    </Rectangle>
+    </Quantity>
+    <Quantity Symbol="m_nom">
+    <Constant>
+      <Value>100000.0</Value>
+    </Constant>
+    </Quantity>
+  </Quantities>
+  <Equations>
+  <Equ Symbol="__delta__m">
+     (m_R__comma__c + __delta__m_R__comma__c)*(1 + (__rho___a - __rho___a0)*(1/__rho___W - 1/__rho___R)) - m_nom
+  </Equ>
+  </Equations>
+  <Results>
+    <Result Symbol="__delta__m">__delta__m</Result>
+  </Results>
+</Model>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulation>
+  <processes>
+    <process name="V_X">
+      <formula>
+        V_iX + @delta@V_iX1 + @delta@V_iX2 + @delta@V_R + @delta@V_LX + @delta@t_X/C_X - @delta@t_0X/C_X0
+      </formula>
+    </process>
+    <process name="@delta@t_X">
+      <formula>
+        t_X - t_0
+      </formula>
+    </process>
+  </processes>
+  <calculation outputdigits="14" mcsimulations="100">
+    <analyse mode="on" histbars="200"/>
+    <variable name="V_iX">
+      <distribution>
+        <studentt>
+          <xbar>36248.00</xbar>
+          <std>1.60</std>
+          <dgf>9</dgf>
+        </studentt>
+      </distribution>
+    </variable>
+    <variable name="@delta@V_iX1">
+      <distribution>
+        <gauss>
+          <mu>0.0</mu>
+          <sigma>1.00</sigma>
+        </gauss>
+      </distribution>
+    </variable>
+    <variable name="@delta@V_iX2">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>0.5</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <variable name="@delta@V_R">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>2.0</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <variable name="@delta@V_LX">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>5</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <variable name="C_X">
+      <distribution>
+        <constant>
+          <value>0.026</value>
+        </constant>
+      </distribution>
+    </variable>
+    <variable name="@delta@t_0X">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>0.1</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <variable name="C_X0">
+      <distribution>
+        <constant>
+          <value>0.039</value>
+        </constant>
+      </distribution>
+    </variable>
+    <variable name="t_X">
+      <distribution>
+        <gauss>
+          <mu>1000.500</mu>
+          <sigma>0.641</sigma>
+        </gauss>
+      </distribution>
+    </variable>
+    <variable name="t_0">
+      <distribution>
+        <constant>
+          <value>1000.0</value>
+        </constant>
+      </distribution>
+    </variable>
+    <uncertainty>
+      <formula name="V_X">V_X</formula>
+    </uncertainty>
+  </calculation>
+</simulation>

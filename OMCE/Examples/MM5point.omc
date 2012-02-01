@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Model xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+  xs:noNamespaceSchemaLocation="OMCE.xsd"
+  Name="Determination of a special form deviation of gauge blocks using the 5-point technique">
+<Comment>
+This example was provided by Dr. M. Matus, Bundesamt für Eich- und Vermessungswesen, Wien, Austria. Email: Michael.Matus@bev.gv.at
+</Comment>
+  <Quantities>
+    <Quantity Symbol="X_1">
+     <Rectangle>
+       <Mean>0</Mean>
+       <Halfwidth>5</Halfwidth>
+     </Rectangle>
+    </Quantity>
+    <Quantity Symbol="X_2">
+     <Rectangle>
+       <Mean>0</Mean>
+       <Halfwidth>5</Halfwidth>
+     </Rectangle>
+    </Quantity>
+    <Quantity Symbol="X_3">
+     <Rectangle>
+       <Mean>0</Mean>
+       <Halfwidth>5</Halfwidth>
+     </Rectangle>
+    </Quantity>
+    <Quantity Symbol="X_4">
+     <Rectangle>
+       <Mean>0</Mean>
+       <Halfwidth>5</Halfwidth>
+     </Rectangle>
+    </Quantity>
+    <Quantity Symbol="X_5">
+     <Rectangle>
+       <Mean>0</Mean>
+       <Halfwidth>5</Halfwidth>
+     </Rectangle>
+    </Quantity>
+  </Quantities>
+  <Equations>
+  <Equ Symbol="f_o">
+     max(X_1,X_2,X_3,X_4,X_5)
+  </Equ>
+  <Equ Symbol="f_u">
+     -min(X_1,X_2,X_3,X_4,X_5)
+  </Equ>
+  <Equ Symbol="v">
+     f_o+f_u
+  </Equ>
+  </Equations>
+  <Results>
+    <Result Symbol="f_o">f_o</Result>
+    <Result Symbol="f_u">f_u</Result>
+    <Result Symbol="v">v</Result>
+  </Results>
+</Model>

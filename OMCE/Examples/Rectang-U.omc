@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+  xs:noNamespaceSchemaLocation="OMCE.xsd">
+  <Quantities>
+    <Quantity Symbol="x">
+    <Rectangle>
+       <Mean>2.0000</Mean>
+       <Halfwidth>0.1</Halfwidth>
+    </Rectangle>
+    </Quantity>
+    <Quantity Symbol="z">
+    <Ushape>
+      <Mean>1.000</Mean>
+      <Halfwidth>0.8</Halfwidth>
+    </Ushape>
+    </Quantity>
+  </Quantities>
+  <Equations>
+  <Equ Symbol="y">
+     x + z
+  </Equ>
+  </Equations>
+  <Results>
+    <Result Symbol="y">y</Result>
+  </Results>
+</Model>

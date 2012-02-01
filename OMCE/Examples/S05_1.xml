@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulation>
+  <processes>
+    <process name="t_X">
+      <formula>
+        t_S + @delta@t_S + C_S*(@delta@V_iS1 + @delta@V_iS2 + @delta@V_R) - C_S/C_S0*@delta@t_0S + @delta@t_D + @delta@t_F
+      </formula>
+    </process>
+  </processes>
+  <calculation outputdigits="14" mcsimulations="100">
+    <analyse mode="on" histbars="200"/>
+    <variable name="t_S">
+      <distribution>
+        <studentt>
+          <xbar>1000.500</xbar>
+          <std>0.100</std>
+          <dgf>9</dgf>
+        </studentt>
+      </distribution>
+    </variable>
+    <variable name="@delta@t_S">
+      <distribution>
+        <gauss>
+          <mu>0.0</mu>
+          <sigma>0.150</sigma>
+        </gauss>
+      </distribution>
+    </variable>
+    <variable name="C_S">
+      <distribution>
+        <constant>
+          <value>0.077</value>
+        </constant>
+      </distribution>
+    </variable>
+    <variable name="@delta@V_iS1">
+      <distribution>
+        <gauss>
+          <mu>0.0</mu>
+          <sigma>1.00</sigma>
+        </gauss>
+      </distribution>
+    </variable>
+    <variable name="@delta@V_iS2">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>0.5</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <variable name="@delta@V_R">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>2.0</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <variable name="C_S0">
+      <distribution>
+        <constant>
+          <value>0.189</value>
+        </constant>
+      </distribution>
+    </variable>
+    <variable name="@delta@t_0S">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>0.1</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <variable name="@delta@t_D">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>0.3</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <variable name="@delta@t_F">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>1</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <uncertainty>
+      <formula name="t_X">t_X</formula>
+    </uncertainty>
+  </calculation>
+</simulation>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulation>
+  <processes>
+    <process name="L_X">
+      <formula>
+        L_S + @delta@L_S + @delta@L_D + @delta@L_M + @delta@L_K + @delta@L_ib - @delta@L_ia + @delta@L_0b - @delta@L_0a
+      </formula>
+    </process>
+  </processes>
+  <calculation outputdigits="14" mcsimulations="100">
+    <analyse mode="on" histbars="200"/>
+    <variable name="L_S">
+      <distribution>
+        <studentt>
+          <values>
+            <value>30.033</value>
+            <value>30.058</value>
+            <value>30.018</value>
+            <value>30.052</value>
+          </values>
+        </studentt>
+      </distribution>
+    </variable>
+    <variable name="@delta@L_S">
+      <distribution>
+        <gauss>
+          <mu>0.00300</mu>
+          <sigma>0.00250</sigma>
+        </gauss>
+      </distribution>
+    </variable>
+    <variable name="@delta@L_D">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>0.002</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <variable name="@delta@L_M">
+      <distribution>
+        <arcsine>
+          <lower>0.0 - 0.0283</lower>
+          <upper>0.0 + 0.0283</upper>
+        </arcsine>
+      </distribution>
+    </variable>
+    <variable name="@delta@L_K">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>0.003</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <variable name="@delta@L_ib">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>0.0005</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <variable name="@delta@L_ia">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>0.0005</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <variable name="@delta@L_0b">
+      <distribution>
+        <gauss>
+          <mu>0.0</mu>
+          <sigma>0.00200</sigma>
+        </gauss>
+      </distribution>
+    </variable>
+    <variable name="@delta@L_0a">
+      <distribution>
+        <gauss>
+          <mu>0.0</mu>
+          <sigma>0.00200</sigma>
+        </gauss>
+      </distribution>
+    </variable>
+    <uncertainty>
+      <formula name="L_X">L_X</formula>
+    </uncertainty>
+  </calculation>
+</simulation>

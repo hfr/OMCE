@@ -1,0 +1,51 @@
+#
+# MUSE output format definition file
+#
+-separator="\t"
+-header=0
+-extension=".sta"
+-quotechar=
+1=filename
+2=No
+3=average
+4=stdevm
+5=stddev
+6=stddevs
+7=low95
+8=low95s
+9=low99
+10=low99s
+11=low999
+12=low999s
+13=high999
+14=high999s
+15=high99
+16=high99s
+17=high95
+18=high95s
+19=bincount
+20=lowbinlimit
+21=highbinlimit
+22=binwidth
+23.%s=BINS
+#Number of lower outliers and standard deviation
+24=NULL
+25=NULL
+#Lower Whisker and standard deviation
+26=low95
+27=NULL
+#Lower Quartile and standard deviation
+28=lowstd
+29=NULL
+#Median and standard deviation
+30=median
+31=medians
+#Upper Quartile and standard deviation
+32=highstd
+33=NULL
+#Upper Whisker and standard deviation
+34=high95
+35=NULL
+#Number of upper outliers and standard deviation
+36=NULL
+37=NULL

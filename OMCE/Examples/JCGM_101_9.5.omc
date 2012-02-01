@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+  xs:noNamespaceSchemaLocation="OMCE.xsd">
+  <Quantities>
+    <Quantity Symbol="L_s">
+    <Student>
+      <Mean>50000623.0000000</Mean>
+      <Scalefactor>25.0</Scalefactor>
+      <Dof>18</Dof>
+    </Student>
+    </Quantity>
+    <Quantity Symbol="D">
+    <Student>
+      <Mean>215.00</Mean>
+      <Scalefactor>6.00</Scalefactor>
+      <Dof>24</Dof>
+    </Student>
+    </Quantity>
+    <Quantity Symbol="d_1">
+    <Student>
+      <Mean>0.0</Mean>
+      <Scalefactor>4.00</Scalefactor>
+      <Dof>5</Dof>
+    </Student>
+    </Quantity>
+    <Quantity Symbol="d_2">
+    <Student>
+      <Mean>0.0</Mean>
+      <Scalefactor>7.00</Scalefactor>
+      <Dof>8</Dof>
+    </Student>
+    </Quantity>
+    <Quantity Symbol="__delta____alpha__">
+    <Ctrapez>
+      <Mean>0.0</Mean>
+      <Halfwidth>0.000001</Halfwidth>
+      <Beta>0.9</Beta>
+    </Ctrapez>
+    </Quantity>
+    <Quantity Symbol="__theta1___0">
+    <Normal>
+      <Mean>-0.100</Mean>
+      <Sigma>0.200</Sigma>
+    </Normal>
+    </Quantity>
+    <Quantity Symbol="__Delta__">
+    <Ushape>
+      <Mean>0.0</Mean>
+      <Halfwidth>0.5</Halfwidth>
+    </Ushape>
+    </Quantity>
+    <Quantity Symbol="__alpha___s">
+    <Rectangle>
+       <Mean>0.00001150</Mean>
+       <Halfwidth>0.000002</Halfwidth>
+    </Rectangle>
+    </Quantity>
+    <Quantity Symbol="__delta____theta1__">
+    <Ctrapez>
+      <Mean>0.0</Mean>
+      <Halfwidth>0.05</Halfwidth>
+      <Beta>0.5</Beta>
+    </Ctrapez>
+    </Quantity>
+    <Quantity Symbol="L_nom">
+    <Constant>
+      <Value>50000000.0</Value>
+    </Constant>
+    </Quantity>
+  </Quantities>
+  <Equations>
+  <Equ Symbol="__delta__L">
+     L_s + D + d_1 + d_2 - L_s*(__delta____alpha__*(__theta1___0 + __Delta__) + __alpha___s*__delta____theta1__) - L_nom
+  </Equ>
+  </Equations>
+  <Results>
+    <Result Symbol="__delta__L">__delta__L</Result>
+  </Results>
+</Model>

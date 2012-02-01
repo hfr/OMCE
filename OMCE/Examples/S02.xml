@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulation>
+  <processes>
+    <process name="m_X">
+      <formula>
+        m_S + @delta@m_D + @delta@_m + @delta@m_C + @delta@_B
+      </formula>
+    </process>
+  </processes>
+  <calculation outputdigits="14" mcsimulations="100">
+    <analyse mode="on" histbars="200"/>
+    <variable name="m_S">
+      <distribution>
+        <gauss>
+          <mu>10000.0050</mu>
+          <sigma>0.0225</sigma>
+        </gauss>
+      </distribution>
+    </variable>
+    <variable name="@delta@m_D">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>0.015</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <variable name="@delta@_m">
+      <distribution>
+        <studentt>
+          <xbar>0.0200</xbar>
+          <std>0.0142</std>
+          <dgf>52</dgf>
+        </studentt>
+      </distribution>
+    </variable>
+    <variable name="@delta@m_C">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>0.010</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <variable name="@delta@_B">
+      <distribution>
+        <rectangle>
+          <mean>0.0</mean>
+          <width>0.010</width>
+        </rectangle>
+      </distribution>
+    </variable>
+    <uncertainty>
+      <formula name="m_X">m_X</formula>
+    </uncertainty>
+  </calculation>
+</simulation>

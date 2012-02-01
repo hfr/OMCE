@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+  xs:noNamespaceSchemaLocation="OMCE.xsd">
+  <Quantities>
+    <Quantity Symbol="x_1">
+    <Rectangle>
+       <Mean>0.0</Mean>
+       <Halfwidth>1</Halfwidth>
+    </Rectangle>
+    </Quantity>
+    <Quantity Symbol="x_2">
+    <Triangle>
+      <Mean>0.0</Mean>
+      <Halfwidth>1</Halfwidth>
+    </Triangle>
+    </Quantity>
+    <Quantity Symbol="x_3">
+    <Trapez>
+      <Mean>0.0</Mean>
+      <Halfwidth>1</Halfwidth>
+      <Beta>0.5</Beta>
+    </Trapez>
+    </Quantity>
+    <Quantity Symbol="x_4">
+    <Ushape>
+      <Mean>0.0</Mean>
+      <Halfwidth>1</Halfwidth>
+    </Ushape>
+    </Quantity>
+    <Quantity Symbol="x_5">
+    <Poisson>
+      <Mean>5.00</Mean>
+    </Poisson>
+    </Quantity>
+    <Quantity Symbol="x_6">
+    <Student>
+      <Mean>0.0</Mean>
+      <Scalefactor>1.00</Scalefactor>
+      <Dof>5</Dof>
+    </Student>
+    </Quantity>
+    <Quantity Symbol="x_7">
+    <Normal>
+      <Mean>0.0</Mean>
+      <Sigma>0.500</Sigma>
+    </Normal>
+    </Quantity>
+  </Quantities>
+  <Equations>
+  <Equ Symbol="y_1">
+     x_1
+  </Equ>
+  <Equ Symbol="y_2">
+     x_2
+  </Equ>
+  <Equ Symbol="y_3">
+     x_3
+  </Equ>
+  <Equ Symbol="y_4">
+     x_4
+  </Equ>
+  <Equ Symbol="y_5">
+     x_5
+  </Equ>
+  <Equ Symbol="y_6">
+     x_6
+  </Equ>
+  <Equ Symbol="y_7">
+     x_7
+  </Equ>
+  </Equations>
+  <Results>
+    <Result Symbol="y_1">y_1</Result>
+    <Result Symbol="y_2">y_2</Result>
+    <Result Symbol="y_3">y_3</Result>
+    <Result Symbol="y_4">y_4</Result>
+    <Result Symbol="y_5">y_5</Result>
+    <Result Symbol="y_6">y_6</Result>
+    <Result Symbol="y_7">y_7</Result>
+  </Results>
+</Model>

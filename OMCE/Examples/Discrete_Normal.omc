@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<Model xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+  xs:noNamespaceSchemaLocation="OMCE.xsd">
+  <Quantities>
+    <Quantity Symbol="X">
+    <Discrete>
+      <Binfile Filename="Normal.bin" Syspath="1" Q="Y"/>
+    </Discrete>
+    </Quantity>
+  </Quantities>
+  <Equations>
+  <Equ Symbol="Y">
+     X
+  </Equ>
+  </Equations>
+  <Results>
+    <Result Symbol="Y">Y</Result>
+  </Results>
+</Model>

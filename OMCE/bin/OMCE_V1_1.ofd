@@ -1,0 +1,26 @@
+#
+# Native OMCE output format definition file
+#
+-separator=","
+-header=1
+-extension=".ohd"
+-quotechar="
+SID=SID
+ID=id
+Symbol=name
+#Unit=unit
+#Definition=definition
+Runs=runs
+#Blocksize=blocksize[0]
+Mean=average
+StdUnc=stddev
+Low95=low95
+High95=high95
+Low99=low99
+High99=high99
+Low99.9=low999
+High99.9=high999
+BinCount=bincount
+LowBinLimit=lowbinlimit
+BinWidth=binwidth
+Bin[%s]=BINS

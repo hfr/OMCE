@@ -1,0 +1,12 @@
+#
+# MUSE var-file format definition
+#
+-separator="\t"
+-header=1
+-extension=".var"
+-quotechar=
+list="(noname)"
+name=name
+position=No
+datafile=filename
+runs=runs
