@@ -5,7 +5,7 @@ goto runit
 rem set opt=/run
 for %%f in (MM5point.omc S02.omc S03.omc S04.omc S05_1.omc S05_2.omc S06.omc S07.omc TypeB.omc) do call %0 %%f %opt%
 for %%f in (JCGM_101_9.5.omc JCGM_101_9.2.2.omc JCGM_101_9.2.3.omc JCGM_101_9.2.4.omc JCGM_101_9.3.omc JCGM_101_9.4.3.omc JCGM_101_9.4.omc) do call %0 %%f %opt%
-for %%f in (log_atan.omc Pythagoras.omc Discrete_Normal.omc Import_Normal.omc Normal.omc) do call %0 %%f %opt%
+for %%f in (log_atan.omc Pythagoras.omc Discrete_Normal.omc Import_Normal.omc Normal.omc Cuberoot.omc) do call %0 %%f %opt%
 ECHO "All examples completed!"
 goto wait
 :runit

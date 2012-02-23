@@ -271,6 +271,7 @@
 	<xs:attribute name="Symbol" type="xs:string"></xs:attribute>
   	<xs:attribute name="Param" type="xs:string" use="optional"></xs:attribute>
   	<xs:attribute name="Global" type="xs:string" use="optional"></xs:attribute>
+  	<xs:attribute name="Using" type="xs:string" use="optional"></xs:attribute>
   	<xs:attribute name="Coding" type="xs:string" use="optional"></xs:attribute>
   </xs:complexType>
 
@@ -293,7 +294,7 @@
   	</xs:sequence>
   	<xs:attribute name="Units" type="xs:string" use="optional"></xs:attribute>
   	<xs:attribute name="Symbols" type="xs:string" use="required"></xs:attribute>
-  	<xs:attribute name="Definition" type="xs:string" use="optional"></xs:attribute>
+  	<xs:attribute name="Definitions" type="xs:string" use="optional"></xs:attribute>
   	<xs:attribute name="Param" type="xs:string" use="optional"></xs:attribute>
   	<xs:attribute name="Using" type="xs:string" use="optional"></xs:attribute>
   	<xs:attribute name="Coding" type="xs:string" use="optional"></xs:attribute>

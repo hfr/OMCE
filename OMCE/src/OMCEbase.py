@@ -192,6 +192,13 @@ def get_main_dir():
         return os.path.dirname(sys.executable)
     return os.path.dirname(__file__)
 
+def get_main_name():
+    if main_is_frozen():
+        fn=os.path.splitext(sys.executable)[0]
+    else:
+        fn=os.path.join(get_main_dir(),os.path.split(sys.argv[0])[1])
+    return os.path.splitext(fn)[0]
+
 class ConText:
     def __init__(self,FT):
         self._Write=FT['write']
@@ -1217,6 +1224,10 @@ class OMCElogger(object):
     def _Write(self,text):
         if self.console:
             self.console.write(text)
+            try:
+                self.console.flush()
+            except:
+                pass
         if self.file:
             self.file.write(text)
             self.file.flush()

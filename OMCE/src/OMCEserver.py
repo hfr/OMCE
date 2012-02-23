@@ -47,6 +47,7 @@ if False:
     import dumbdbm
 import anydbm
 import thread as TH
+import threading as THG
 import re
 Simulator=None
 
@@ -339,6 +340,20 @@ def ServerMain(argv=[],usecfg=True):
         StartServer(port,ar,host,fork,quiet,vdbn,tls)
     return
 
+def ScanUserInput():
+   while True:
+       try:
+           c=sys.stdin.read(1)
+           if ord(c)==3:
+               OMCEService.Server.close()
+               break
+       except:
+           break
+
 if __name__=="__main__":
-    ExitCode=run_main(ServerMain,sys.argv,True)
-    sys.exit(ExitCode)
+   Thd=THG.Thread(target=ScanUserInput)
+   Thd.daemon=True
+   Thd.start()
+   ExitCode=run_main(ServerMain,sys.argv,True)
+   sys.exit(ExitCode)
+

@@ -90,8 +90,9 @@
 # 1.2.14.3 2012-01-24 Rüdiger Kessel: added Python coding for user defined functions
 # 1.2.14.4 2012-01-30 Rüdiger Kessel: added Proc element
 # 1.2.14.5 2012-02-01 Rüdiger Kessel: minor bugfix
+# 1.2.14.6 2012-02-23 Rüdiger Kessel: bugfix get_main_name, added cuberoot
 #-----------------------------------------------------
-__version__="1.2.14.5"
+__version__="1.2.14.6"
 __MODID__="Open Monte Carlo Engine (OMCE V:"+__version__+")"
 __AUTHOR__="Author: Ruediger Kessel (ruediger.kessel@gmail.com)"
 #-----------------------------------------------------
@@ -235,6 +236,9 @@ class SimContext:
         U=self.RS.random_sample(self.DataBlockSize)-0.5
         return m-b*Numpy.sign(U)*Numpy.log(1 - 2*Numpy.fabs(U))
 
+    def cuberoot(self,x):
+        return Numpy.sign(x)*Numpy.power(Numpy.abs(x),1.0/3.0)
+
     def maximum(self,*vs):
         if len(vs)==0:
             self.ERROR(25,"maximum()")
@@ -358,6 +362,7 @@ def GetPredefinedFunc(opts,simcon):
     glob['sinh']=Numpy.sinh
     glob['cosh']=Numpy.cosh
     glob['tanh']=Numpy.tanh
+    glob['cuberoot']=simcon.cuberoot
     glob['minimum']=simcon.minimum
     glob['min']=simcon.minimum
     glob['maximum']=simcon.maximum
@@ -440,11 +445,17 @@ def SetEnvironment(opts,env):
     env['Warning']=__print_warning__
     return
 
+class UserFuncException(Exception):
+    def __init__(self,func,msg):
+        super(Exception,self).__init__(msg)
+        self.func=func
+        return
+
 def CompileFuncs(opts,data):
     '''
     compile usr defined functions given in data['funcdefs']'
     '''
-    def FuncHeader(F,addself=False,addgbl=True):
+    def FuncHeader(F,addself=False,addgbl=True,addcontf=False):
         param=F['param']
         sym=F['sym']
         if addself:
@@ -452,9 +463,14 @@ def CompileFuncs(opts,data):
             sym='_uf_'+sym
         FT='def '+sym+'('+','.join(param)+'):\n'
         if addgbl:
-            if (len(F['global'])>0):
+            if F['global']:
                 for gbl in F['global']:
                     FT+='    '+gbl+'=self.__get_global__("'+gbl+'")\n'
+        if addcontf:
+            if F['contf']:
+                for f in F['contf']:
+                    if f in map(lambda x:x['sym'],data['funcdefs']):
+                        FT+='    '+f+'=self._uf_'+f+'\n'
         return FT
     def __print_error__(_self,msg):
         raise Error(250,msg)
@@ -499,7 +515,8 @@ def CompileFuncs(opts,data):
             FT+=2*I+'return '+''.join(GR[0])+'\n'
             FT+='\n'
         elif F['coding']=='PYTHON':
-            F['contf']=[]
+            if opts['-py']==0:
+                context.ERROR(102)
             F['uglobal']=[]
             for S in F['param']:
                 if S in F['global']:
@@ -521,15 +538,17 @@ def CompileFuncs(opts,data):
                 else:
                     context.ERROR(32,S,F['name'])
             gbls=gbls+F['global']
-            for line in FuncHeader(F,True,True).strip('\n').split('\n'):
+            for line in FuncHeader(F,True,True,True).strip('\n').split('\n'):
                 FT+=I+line+'\n'
             FT+=2*I+'Numpy=self.__numpy__\n'
             FT+=2*I+'BlockSize=self.__block_size__\n'
             FT+=2*I+'Error=self.__print_error__'+'\n'
             FT+=2*I+'Warning=self.__print_warning__'+'\n'
-            FT+=2*I+'if True:'+'\n'
+            FT+=2*I+'try:'+'\n'
             for l in F['equ'].split('\n'):
                 FT+=3*I+l+'\n'
+            FT+=2*I+'except Exception,EX:'+'\n'
+            FT+=3*I+'raise self.__exception__("'+F['sym']+'",str(EX))'+'\n'
             FT+='\n'
         else:
             context.ERROR(94,F['coding'],F['name'])
@@ -552,9 +571,7 @@ def CompileFuncs(opts,data):
     for v in data['equs']:
         for sym in v['syms']:
             SYMS[sym]=None
-    CONTEXT=DictMerge(data['predefequs'],SYMS)
-    data['predefequs']=CONTEXT
-    CONTEXT=copy.copy(CONTEXT)
+    CONTEXT=copy.copy(data['predefequs'])
     E={}
     exec '' in E
     CONTEXT['__builtins__']=E['__builtins__']
@@ -564,11 +581,12 @@ def CompileFuncs(opts,data):
     CONTEXT['__User_Functions__'].__print_error__=__print_error__
     CONTEXT['__User_Functions__'].__print_warning__=__print_warning__
     CONTEXT['__User_Functions__'].__block_size__=__block_size__
+    CONTEXT['__User_Functions__'].__exception__=UserFuncException
     data['usr_func_obj']=CONTEXT['__User_Functions__']()
     for F in data['funcdefs']:
         F['code']=getattr(data['usr_func_obj'],'_uf_'+F['sym'])
         data['predefequs'][F['sym']]=F['code']
-    data['usr_context']=CONTEXT
+    data['usr_context']=DictMerge(CONTEXT,SYMS)
     return
 
 class XmlReaderBase:
@@ -821,6 +839,11 @@ class OMCReader(XmlReaderBase):
                     F['coding']=string.upper(self.STRIPED(f.Coding))
                 else:
                     F['coding']='OMCE'
+                if (F['coding']!='OMCE') and hasattr(f,'Using'):
+                    P=self.STRIPED(f.Using)
+                    F['contf']=self.GetContr(self.ConvSymNames(P.replace(' ','').split(',')))
+                else:
+                    F['contf']=[]
                 if F['coding']=='OMCE':
                     F['src']=self.GetFormula(f)
                 else:
@@ -1090,14 +1113,8 @@ class OMCReader(XmlReaderBase):
                         E['contf']=self.GetContr(self.ConvSymNames(P.replace(' ','').split(',')))
                     else:
                         E['contf']=[]
-                    ls=E['equ'].split('\n')
-                    es='if True:\n'
-                    I='    '
-                    for line in ls:
-                        es+=I+line+'\n'
-                    E['code']=COMPILE(es,'exec')
                     if hasattr(proc,'Units'):
-                        E['units']=self.STRIPED(proc.Unit).replace(' ','')
+                        E['units']=self.STRIPED(proc.Units).replace(' ','')
                     else:
                         E['units']=''
                     if hasattr(proc,'Coding'):
@@ -1105,6 +1122,14 @@ class OMCReader(XmlReaderBase):
                     else:
                         E['coding']='PYTHON'
                     if E['coding']=='PYTHON':
+                        if opts['-py']==0:
+                            self.ERROR(102)
+                        ls=E['equ'].split('\n')
+                        es='if True:\n'
+                        I='    '
+                        for line in ls:
+                            es+=I+line+'\n'
+                        E['code']=COMPILE(es,'exec')
                         env={}
                         exec '' in env
                         SetEnvironment(opts,env)
@@ -2615,10 +2640,10 @@ def RunSimulation(opts,data,results,validation,k):
             try:
                 MRL=eval(equ['code'],EVL)
             except Error:
-                print "Error"
                 raise
+            except UserFuncException,EX:
+                context.ERROR(101,EX.func,context.STR(EX))
             except Exception,EX:
-                print "Error Ex"
                 context.ERROR(96,equ['name'],context.STR(EX))
             if MRL is None:
                 context.ERROR(97,equ['name'])
@@ -2632,10 +2657,8 @@ def RunSimulation(opts,data,results,validation,k):
             try:
                 exec equ['code'] in env
             except Error:
-                print "Error"
                 raise
             except Exception,EX:
-                print "Error Ex"
                 context.ERROR(95,equ['name'],context.STR(EX))
             for i,sym in enumerate(equ['syms']):
                 try:
@@ -3787,6 +3810,8 @@ def InitOptions(opts,specs,filename=''):
     specs['-po']=['i',0,1,0,         'print all options and exit if -po=1']
     specs['-pq']=['i',0,4,0,         'quantile estimation method (0..4)']
     specs['-pr']=['i',1,100,10,      'number of of initial runs used to establish the histogram bounds']
+    specs['-py']=['i',0,1,1,         'enable Python coding in function and procedure sections']
+
     specs['-sbs']=['i',100,10000,-1, 'controls the sub block size for the processing']
     specs['-sd']=['i',1,4,2,         'number of significant digits for adaptive mode']
     specs['-seed']=['i',0,maxi,0,    'sets the seed of the random generator if nonzero']
@@ -4016,20 +4041,27 @@ def MonteCarlo(sid,filename,path,data,results,options,SimOptStr,opts,specs):
         if len(data['simcon'].ListOfVars)>0:
             context.PRINT('Input Quantities:',VL_Info)
             for v in data['simcon'].ListOfVars:
-                context.WRITE("%2s" % context.STR(v['id']),VL_Info)
-                context.PRINT(': '+v['name']+' ('+v['type']+') '+context.STR(v['exec']),VL_Info)
-        if len(EL)>0:
+                tmp="%2s: %s (%s) %s" % (context.STR(v['id']),context.STR(v['name']),context.STR(v['type']),context.STR(v['exec']))
+                context.PRINT(tmp,VL_Info)
+        if len(EL):
             context.PRINT('Equations:',VL_Info)
             for E in EL:
                 context.WRITE("%2s" % context.STR(E['id']),VL_Info)
-                context.PRINT(': '+E['name']+' = '+E['equ']+';',VL_Info)
+                if E['type']=='proc':
+                    context.PRINT(': '+E['name']+':',VL_Info)
+                    context.PRINT(E['equ'].rstrip(' \n'),VL_Info)
+                else:
+                    context.PRINT(': '+E['name']+' = '+E['equ']+';',VL_Info)
                 context.PRINT('    dependency: '+context.STR(E['cont']),VL_Info)
             context.PRINT('Execution Order: '+context.STR(exo),VL_Info)
-        if len(RL)>0:
+        if len(RL):
             context.PRINT('Results:',VL_Info)
             for R in RL:
                 context.WRITE("%2s" % context.STR(R['id']),VL_Info)
                 context.PRINT(': '+R['name']+' = '+R['equ']+'; '+R['unit']+'; '+R['definition']+';',VL_Info)
+        if len(data['funcdefs']):
+            context.PRINT('Python:',VL_Info)
+            context.PRINT(data['funcdeftext'],VL_Info)
         Exit()
     tic = time.clock()
     if opts['-mcs']>=0:
@@ -4103,7 +4135,7 @@ def MonteCarlo(sid,filename,path,data,results,options,SimOptStr,opts,specs):
     EndInfo(context,MemName)
     return
 
-def Simulator(argv,context,path=get_main_dir(),modname=os.path.splitext(sys.argv[0])[0],IsServer=False):
+def Simulator(argv,context,path=get_main_dir(),modname=get_main_name(),IsServer=False):
 #    path=get_main_dir()
     data={}
     data['context']=context
